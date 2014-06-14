@@ -116,6 +116,9 @@ function playing(event) {
     moving();
     $("#play").attr("disabled", "true");
     $("#load").attr("disabled", "true");
+    $("#stop").removeAttr("disabled");
+
+    update_time();
 }
 
 function updateBPM(new_bpm) {
@@ -279,10 +282,9 @@ function loading(event) {
     request.onprogress = function (evt) {
         if (evt.lengthComputable) {  //evt.loaded the bytes browser receive
             //evt.total the total bytes seted by the header
-            //
             var percentComplete = (evt.loaded / evt.total) * 100;
-            console.log(percentComplete);
-            // $('#progressbar').progressbar("option", "value", percentComplete);
+            $("#load_progress").val(percentComplete.toFixed(4) + "%");
+            // console.log(percentComplete);
         }
     };
     request.open('GET', music_url, true);
@@ -295,21 +297,6 @@ function loading(event) {
         }, null);
     }
     request.send();
-
-    /*
-    if (snd != null)
-        delete snd;
-    snd = new Audio("sound/" + music_title + ".ogg");
-	snd.load();
-    $(snd).on("canplaythrough", function () {
-        snd.currentTime = currentTime;
-        $("#play").removeAttr("disabled")
-        snd.ontimeupdate = function () {
-            $("#time").val(snd.currentTime);
-        }
-        $(snd).off();
-    });
-    */
 
     jQuery.ajax({
         url: "sheet/" + music_title + ".js",
@@ -353,9 +340,22 @@ function mousewheelAction(e) {
     $(window).one('mousewheel', mousewheelAction);
 }
 
+function update_time(event) {
+    if (source.playbackState == source.PLAYING_STATE)
+        $("#time").val(((context.currentTime - startTime + startOffset) % snd.duration).toFixed(4));
+    setTimeout(update_time, 1000 / 60);
+}
+
 function copying(event) {
-    var text = location.protocol + '//' + location.host + location.pathname + "?speed=" + $("#speed").val() + "&time=" + $("#time").val();
+    var text = location.protocol + '//' + location.host + location.pathname + "?music=" + $("#music").val() + "&speed=" + $("#speed").val() + "&time=" + $("#time").val();
     window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+}
+
+function select_song(event) {
+    $("#play").attr("disabled", "true");
+    $("#stop").attr("disabled", "true");
+    $("#load").removeAttr("disabled");
+    $("#time").val("0");
 }
 
 $(document).ready(function () {
@@ -366,7 +366,11 @@ $(document).ready(function () {
 	$("#stop").on("click", stopping);
 	$("#copy").on("click", copying);
 
+	$("#music").on("change", select_song);
+
 	$("#play").attr("disabled", "true");
+	$("#stop").attr("disabled", "true");
+	$("#load").removeAttr("disabled");
 
 	$("#g_sheet").svg();
 	$("#g_bpm").svg();
@@ -388,6 +392,9 @@ $(document).ready(function () {
     var url_time = $.url().param("time");
     if (url_time != undefined)
         $("#time").val(url_time);
+    var url_song = $.url().param("music");
+    if (url_song != undefined)
+        $("#music").val(url_song);
 
     // Web Audio API
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
