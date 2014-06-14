@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/jquery.svg/jquery.svg.min.js"></script>
+    <script src="js/jquery.svg/jquery.svganim.min.js"></script>
+	<script src="js/jquery.svg/jquery.svgdom.min.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/purl.js"></script>
+    <link type="text/css" href="css/sheet_style.css" rel="stylesheet" media="all" />
+</head>
+<body>
+    <select id="music">
+        <option value="hanakagerou_e">華陽炎-Hana Kagerou-</option>
+        <option value="lostone_e">ロストワンの号哭</option>
+        <option value="hyena_e">HYENA</option>
+    </select>
+	<input type="button" id="load" value="Load" />
+    <input type="button" id="play" value="Play" />
+    <input type="button" id="stop" value="Stop" />
+    <input type="button" id="copy" value="Copy" />
+    <input type="text" id="speed" value="1.0" size="1" />
+    <input type="text" id="time" value="0" size="5" />
+    <svg width="300" height="600">
+        <g id="g_background">
+            <polygon class="sheet_background" points="50,10 50,510 250,510 250,10" />
+            <polygon class="sheet_background_leftside" points="0,10 0,510 50,510 50,10" />
+            <polygon class="sheet_background_rightside" points="250,10 250,510 300,510 300,10" />
+            <polygon class="sheet_background_line" points="47,10 47,510 53,510 53,10" />
+            <polygon class="sheet_background_line" points="97,10 97,510 103,510 103,10" />
+            <polygon class="sheet_background_line" points="147,10 147,510 153,510 153,10" />
+            <polygon class="sheet_background_line" points="197,10 197,510 203,510 203,10" />
+            <polygon class="sheet_background_line" points="247,10 247,510 253,510 253,10" />
+        </g>
+
+        <g id="g_bpm">
+
+        </g>
+
+        <g id="g_sheet">
+            <g id="g_sheet_measure"></g>
+            <g id="g_sheet_long"></g>
+            <g id="g_sheet_analog"></g>
+            <g id="g_sheet_short"></g>
+        </g>
+
+        <g id="g_check">
+            <polygon class="sheet_check_line" points="0,506 0,510 300,510 300,506" />
+            <polygon class="sheet_background" points="50,510 50,610 250,610 250,510" />
+            <polygon class="sheet_background_leftside" points="0,510 0,610 50,610 50,510" />
+            <polygon class="sheet_background_rightside" points="250,510 250,610 300,610 300,510" />
+            <polygon class="sheet_background_line" points="47,510 47,610 53,610 53,510" />
+            <polygon class="sheet_background_line" points="97,510 97,610 103,610 103,510" />
+            <polygon class="sheet_background_line" points="147,510 147,610 153,610 153,510" />
+            <polygon class="sheet_background_line" points="197,510 197,610 203,610 203,510" />
+            <polygon class="sheet_background_line" points="247,510 247,610 253,610 253,510" />
+        </g>
+
+    </svg>
+</body>
+</html>

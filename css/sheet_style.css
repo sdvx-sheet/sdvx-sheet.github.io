@@ -1,0 +1,44 @@
+﻿body {
+}
+
+.sheet_background {
+    fill: #333;
+}
+
+.sheet_background_line {
+    fill: #5c5c5c;
+}
+
+.sheet_background_leftside {
+    fill: #3b4153;
+}
+
+.sheet_background_rightside {
+    fill: #4d3946;
+}
+
+.sheet_check_line {
+    fill: #ff0000;
+}
+
+.note, .note_long {
+    fill: #fefffc;
+}
+
+.fx {
+    fill: #e1941b;
+}
+
+.fx_long {
+    fill: rgba(225, 148, 27, 0.70);
+}
+
+.analog_blue {
+    fill: #8080ff;
+    opacity: 0.7;
+}
+
+.analog_red {
+    fill: #ff80ff;
+    opacity: 0.7;
+}
