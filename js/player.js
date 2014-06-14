@@ -326,6 +326,8 @@ function mousewheelAction(e) {
         // updateSheetByTime($("#g_sheet")[0], snd.currentTime * 1000);
         if (is_playing)
             playing();
+        else
+            $("#time").val((startOffset % snd.duration).toFixed(4));
     }
     else {
         // console.log(e.originalEvent.wheelDelta);
@@ -337,6 +339,8 @@ function mousewheelAction(e) {
         updateSheetByTime($("#g_sheet")[0], (startOffset % snd.duration) * 1000);
         if (is_playing)
             playing();
+        else
+            $("#time").val((startOffset % snd.duration).toFixed(4));
     }
     $(window).one('mousewheel', mousewheelAction);
 }
