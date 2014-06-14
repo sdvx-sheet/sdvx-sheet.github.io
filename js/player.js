@@ -4,6 +4,7 @@ context = null;
 startOffset = 0;
 startTime = 0;
 source = null;
+request = null;
 
 speed = 1.0;
 currentTime = 0;
@@ -278,7 +279,7 @@ function loading(event) {
 
     // load music
     var music_url = "sound/" + music_title + ".ogg";
-    var request = new XMLHttpRequest();
+    request = new XMLHttpRequest();
     request.onprogress = function (evt) {
         if (evt.lengthComputable) {  //evt.loaded the bytes browser receive
             //evt.total the total bytes seted by the header
@@ -352,6 +353,9 @@ function copying(event) {
 }
 
 function select_song(event) {
+    if (request) request.abort();
+    if (source != null)
+        stopping();
     $("#play").attr("disabled", "true");
     $("#stop").attr("disabled", "true");
     $("#load").removeAttr("disabled");
