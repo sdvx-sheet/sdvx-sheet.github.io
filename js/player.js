@@ -295,7 +295,7 @@ function loading(event) {
             snd = buffer;
             startOffset = currentTime;
             $("#play").removeAttr("disabled");
-        }, null);
+        }, function () { });
     }
     request.send();
 
