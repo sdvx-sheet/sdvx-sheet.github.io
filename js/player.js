@@ -11,6 +11,7 @@ currentTime = 0;
 
 bpm_list = [];
 
+mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
 
 
 finish_c = 48 * 4 * 90;
@@ -91,12 +92,17 @@ function moving() {
     moving_sheet();
 }
 
+function source_onended() {
+    this.isPlaying = false;
+}
+
 function stopping(event) {
     $(".bpm").stop();
     $("#g_sheet").stop();
 
     // snd.pause();
-    if (source.playbackState == source.PLAYING_STATE) {
+    // if (source.playbackState == source.PLAYING_STATE) {
+    if (source.isPlaying == true) {
         source.stop();
         startOffset += context.currentTime - startTime;
     }
@@ -108,10 +114,14 @@ function stopping(event) {
 function playing(event) {
     // snd.play();
     startTime = context.currentTime;
+    if (source != null)
+        source.stop();
     source = context.createBufferSource();
     source.buffer = snd;
     source.loop = false;
     source.connect(context.destination);
+    source.isPlaying = true;
+    source.onended = source_onended;
     source.start(0, startOffset % snd.duration);
 
     moving();
@@ -310,16 +320,20 @@ function loading(event) {
 
     
 
-    $(window).one('mousewheel', mousewheelAction);
+    $(window).one(mousewheelevt, mousewheelAction);
 }
 
 function mousewheelAction(e) {
-    if (e.originalEvent.wheelDelta > 0) {
+    var evt = window.event || e; //equalize event object
+    var delta = evt.originalEvent ? evt.originalEvent.detail * (-120) : evt.wheelDelta; //delta returns +120 when wheel is scrolled up, -120 when scrolled down
+    if (delta > 0) {
         // console.log(e.originalEvent.wheelDelta);
         // Mouse Wheel Up, time--
-        var is_playing = (source.playbackState == source.PLAYING_STATE);
+        // var is_playing = (source.playbackState == source.PLAYING_STATE);
+        var is_playing = source.isPlaying;
         stopping();
-        startOffset = startOffset - e.originalEvent.wheelDelta / 1000;
+        // startOffset = startOffset - e.originalEvent.wheelDelta / 1000;
+        startOffset = startOffset - delta / 1000;
         // if (startOffset > snd.duration) startOffset = snd.duration;
         updateSheetByTime($("#g_sheet")[0], (startOffset % snd.duration) * 1000);
         // snd.currentTime = snd.currentTime - e.originalEvent.wheelDelta / 1000;
@@ -332,9 +346,11 @@ function mousewheelAction(e) {
     else {
         // console.log(e.originalEvent.wheelDelta);
         // Mouse Wheel Down, time++
-        var is_playing = (source.playbackState == source.PLAYING_STATE);
+        // var is_playing = (source.playbackState == source.PLAYING_STATE);
+        var is_playing = source.isPlaying;
         stopping();
-        startOffset = startOffset - e.originalEvent.wheelDelta / 1000;
+        // startOffset = startOffset - e.originalEvent.wheelDelta / 1000;
+        startOffset = startOffset - delta / 1000;
         // if (startOffset > snd.duration) startOffset = snd.duration;
         updateSheetByTime($("#g_sheet")[0], (startOffset % snd.duration) * 1000);
         if (is_playing)
@@ -342,11 +358,12 @@ function mousewheelAction(e) {
         else
             $("#time").val((startOffset % snd.duration).toFixed(4));
     }
-    $(window).one('mousewheel', mousewheelAction);
+    $(window).one(mousewheelevt, mousewheelAction);
 }
 
 function update_time(event) {
-    if (source.playbackState == source.PLAYING_STATE)
+    // if (source.playbackState == source.PLAYING_STATE)
+    if (source.isPlaying == true)
         $("#time").val(((context.currentTime - startTime + startOffset) % snd.duration).toFixed(4));
     setTimeout(update_time, 1000 / 60);
 }
