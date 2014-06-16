@@ -79,12 +79,14 @@ function moving_bpm() {
             var dist = 506 - current_y;
             var time = getTimeByDist(dist);
             var goal = 506 - original_y;
-            if (time < 100) return;
-            $(this).animate({ svgTransform: 'translate(0 ' + goal + ')' }, time, "linear", function () {
-                var new_bpm = $(this).data("bpm");
-                $(this).removeClass("moving");
-                updateBPM(new_bpm);
-            });
+            if (time < 100) $(this).addClass("invisible");
+            else
+                $(this).animate({ svgTransform: 'translate(0 ' + goal + ')' }, time, "linear", function () {
+                    var new_bpm = $(this).data("bpm");
+                    $(this).removeClass("moving");
+                    updateBPM(new_bpm);
+                    console.log("update BPM");
+                });
         });
     }
 }
@@ -109,6 +111,7 @@ function stopping(event) {
         source.isPlaying = false;
         source.stop();
         window.startOffset += window.currentTime - startTime;
+        $("#time").val(window.startOffset);
     }
 
     $("#play").removeAttr("disabled");
@@ -140,7 +143,7 @@ function playing(event) {
 
 function updateBPMUI() {
     $("#bpm").val(bpm);
-    $("#bpm_times_speed").val(bpm * speed);
+    $("#bpm_times_speed").val((bpm * speed).toFixed(4));
 }
 
 function updateBPM(new_bpm) {
