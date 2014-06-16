@@ -100,7 +100,7 @@ function source_onended() {
     this.isPlaying = false;
     var time = (context.currentTime - startTime + startOffset) * music_speed;
     if (time >= snd.duration) {
-        startOffset = snd.duration - 0.1;
+        startOffset = (snd.duration - 0.1) / music_speed;
         $("#play").removeAttr("disabled");
         $("#load").removeAttr("disabled");
     }
@@ -355,13 +355,14 @@ function dragTimeBar(e) {
     var is_playing = (window.source == null) ? false : window.source.isPlaying;
     if (is_playing)
         stopping();
-    startOffset = +$("#time_bar").val();
+    // startOffset = +$("#time_bar").val() / music_speed;
+    var time_offset = +$("#time_bar").val() / music_speed;
     $("#time").val($("#time_bar").val());
-    updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
+    updateSheetByTime($("#g_sheet")[0], ((time_offset * music_speed) % snd.duration) * 1000);
 }
 
 function releaseTimeBar(e) {
-    startOffset = +$("#time").val();
+    startOffset = +$("#time").val() / music_speed;
     updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
 }
 
@@ -451,8 +452,10 @@ $(document).ready(function() {
     if (url_speed != undefined)
         $("#speed").val(url_speed);
     var url_time = $.url().param("time");
-    if (url_time != undefined)
+    if (url_time != undefined) {
         $("#time").val(url_time);
+        $("#time_bar").val(url_time);
+    }
     var url_song = $.url().param("music");
     if (url_song != undefined)
         $("#music").val(url_song);
