@@ -98,6 +98,12 @@ function moving() {
 
 function source_onended() {
     this.isPlaying = false;
+    var time = (context.currentTime - startTime + startOffset) * music_speed;
+    if (time >= snd.duration) {
+        startOffset = snd.duration - 0.1;
+        $("#play").removeAttr("disabled");
+        $("#load").removeAttr("disabled");
+    }
 }
 
 function stopping(event) {
@@ -327,6 +333,9 @@ function loading(event) {
             startOffset = currentTime / music_speed;
             $("#play").removeAttr("disabled");
             $(window).one(mousewheelevt, mousewheelAction);
+            $("#time_bar").attr("max", snd.duration);
+            $("#time_bar").on("input", dragTimeBar);
+            $("#time_bar").on("change", releaseTimeBar);
         }, function() {});
     };
     request.send();
@@ -340,6 +349,20 @@ function loading(event) {
         },
         async: true
     });
+}
+
+function dragTimeBar(e) {
+    var is_playing = (window.source == null) ? false : window.source.isPlaying;
+    if (is_playing)
+        stopping();
+    startOffset = +$("#time_bar").val();
+    $("#time").val($("#time_bar").val());
+    updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
+}
+
+function releaseTimeBar(e) {
+    startOffset = +$("#time").val();
+    updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
 }
 
 function mousewheelAction(e) {
@@ -373,8 +396,10 @@ function mousewheelAction(e) {
 function update_time(event) {
     // if (source.playbackState == source.PLAYING_STATE)
     if (source.isPlaying == true) {
-        $("#time").val(((((context.currentTime - startTime + startOffset) * music_speed) % snd.duration)).toFixed(4));
-        setTimeout(update_time, 1000 / 60);
+        var time = ((((context.currentTime - startTime + startOffset) * music_speed) % snd.duration)).toFixed(4);
+        $("#time").val(time);
+        $("#time_bar").val(time);
+        setTimeout(update_time, 1000 / 10);
     }
 }
 
@@ -391,6 +416,7 @@ function select_song(event) {
     $("#stop").attr("disabled", "true");
     $("#load").removeAttr("disabled");
     $("#time").val("0");
+    $("#time_bar").val("0.0");
 }
 
 $(document).ready(function() {

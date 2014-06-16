@@ -46,3 +46,7 @@
 .invisible {
     display : none;
 }
+
+.time_bar {
+    width: 465px;
+}
