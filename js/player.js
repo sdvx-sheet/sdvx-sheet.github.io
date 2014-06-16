@@ -1,6 +1,6 @@
 ﻿bpm = 0;
 snd = null;
-context = null;
+context = new AudioContext();
 startOffset = 0;
 startTime = 0;
 source = null;
@@ -8,16 +8,20 @@ request = null;
 
 speed = 1.0;
 currentTime = 0;
+music_speed = 1.0;
 
 bpm_list = [];
 
-mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel" //FF doesn't recognize mousewheel as of FF3.x
-
+mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
 
 finish_c = 48 * 4 * 90;
 
+function getPosition(c) {
+    return 510 - ((c / 48) * 500 / 4) * speed;
+}
+
 function getTimeByDist(dist) {
-    return 60 / bpm * 4 * 1000 / 500 * dist / speed;
+    return 60 / bpm * 4 * 1000 / 500 * dist / speed / music_speed;
 }
 
 function getDistByTime(time) {
@@ -32,8 +36,7 @@ function getTimeByCAndBPM(c, current_bpm) {
 function getCByTime(time) {
     // 從頭開始計算 bpm 所需時間
     var total_c = 0;
-    for (var bpm_list_index in bpm_list)
-    {
+    for (var bpm_list_index in bpm_list) {
         bpm_list_index = parseInt(bpm_list_index, 10);
         var start_c = bpm_list[bpm_list_index][0];
         var next_bpm_element = bpm_list[bpm_list_index + 1];
@@ -44,13 +47,10 @@ function getCByTime(time) {
 
         // 將 c 轉換成時間
         var time_through = getTimeByCAndBPM(c_through, current_bpm);
-        if (time_through >= time)
-        {
+        if (time_through >= time) {
             total_c += time * (current_bpm / 60 / 1000) * 48;
             break;
-        }
-        else
-        {
+        } else {
             total_c += c_through;
             time -= time_through;
         }
@@ -70,16 +70,15 @@ function moving_sheet() {
 
 function moving_bpm() {
     if ($(".bpm.moving").hasClass("moving")) {
-        $(".bpm.moving").each(function (index) {
+        $(".bpm.moving").each(function(index) {
             var current_sheet = this;
             var original_y = current_sheet.getBBox().y;
             var current_y = original_y + current_sheet.getCTM().f;
             var dist = 506 - current_y;
             var time = getTimeByDist(dist);
             var goal = 506 - original_y;
-            $(this).animate({ svgTransform: 'translate(0 ' + goal + ')' }, time, "linear", function () {
+            $(this).animate({ svgTransform: 'translate(0 ' + goal + ')' }, time, "linear", function() {
                 var new_bpm = $(this).data("bpm");
-                // $(this).removeClass("bpm");
                 $(this).removeClass("moving");
                 updateBPM(new_bpm);
             });
@@ -97,32 +96,36 @@ function source_onended() {
 }
 
 function stopping(event) {
+    window.currentTime = context.currentTime;
     $(".bpm").stop();
     $("#g_sheet").stop();
 
-    // snd.pause();
-    // if (source.playbackState == source.PLAYING_STATE) {
-    if (source.isPlaying == true) {
+    var is_playing = (source == null) ? false : source.isPlaying;
+
+    if (is_playing) {
+        source.isPlaying = false;
         source.stop();
-        startOffset += context.currentTime - startTime;
+        window.startOffset += window.currentTime - startTime;
     }
 
     $("#play").removeAttr("disabled");
     $("#load").removeAttr("disabled");
+
+    $("#time").val(((window.startOffset * music_speed) % snd.duration).toFixed(4));
 }
 
 function playing(event) {
-    // snd.play();
-    startTime = context.currentTime;
-    if (source != null)
-        source.stop();
-    source = context.createBufferSource();
-    source.buffer = snd;
-    source.loop = false;
-    source.connect(context.destination);
-    source.isPlaying = true;
-    source.onended = source_onended;
-    source.start(0, startOffset % snd.duration);
+    window.startTime = context.currentTime;
+    if (window.source != null)
+        window.source.stop();
+    window.source = context.createBufferSource();
+    window.source.buffer = snd;
+    window.source.loop = false;
+    window.source.connect(context.destination);
+    window.source.isPlaying = true;
+    window.source.onended = source_onended;
+    window.source.playbackRate.value = music_speed;
+    window.source.start(0, ((startOffset * music_speed) % snd.duration));
 
     moving();
     $("#play").attr("disabled", "true");
@@ -132,14 +135,40 @@ function playing(event) {
     update_time();
 }
 
-function updateBPM(new_bpm) {
-    stopping();
-    bpm = new_bpm;
-    playing();
+function updateBPMUI() {
+    $("#bpm").val(bpm);
+    $("#bpm_times_speed").val(bpm * speed);
 }
 
-function getPosition(c) {
-    return 510 - ((c / 48) * 500 / 4) * speed;
+function updateBPM(new_bpm) {
+    stopping();
+    if ($("#constant_bpm").prop("checked") == true) {
+        $("#g_sheet_measure").html("");
+        $("#g_sheet_short").html("");
+        $("#g_sheet_analog").html("");
+        $("#g_sheet_long").html("");
+        $("#g_bpm").html("");
+        bpm_list = [];
+        var music_title = $("#music").val();
+        var new_speed = (window.bpm * window.speed) / new_bpm;
+        $("#speed").val(new_speed);
+        window.speed = new_speed;
+        var c_time = +$("#time").val();
+        jQuery.ajax({
+            url: "sheet/" + music_title + ".js",
+            dataType: 'script',
+            success: function() {
+                updateSheetByTime($("#g_sheet")[0], c_time * 1000);
+                window.bpm = new_bpm;
+                playing();
+            },
+            async: true
+        });
+    } else {
+        window.bpm = new_bpm;
+        playing();
+    }
+    updateBPMUI();
 }
 
 function addMeasurePolygon(svg, y) {
@@ -148,29 +177,25 @@ function addMeasurePolygon(svg, y) {
     new_svg.setAttribute("transform", "translate(0,0)");
 }
 
-function getNotePos(note_pos)
-{
+function getNotePos(note_pos) {
     return 53 + 50 * note_pos;
 }
 
-function addNote(svg, note_pos, y)
-{
+function addNote(svg, note_pos, y) {
     var x_left = getNotePos(note_pos);
     var new_svg = svg.polygon([[x_left, y], [x_left, y - 6], [x_left + 44, y - 6], [x_left + 44, y]]);
     new_svg.setAttribute("class", "note moving");
     new_svg.setAttribute("transform", "translate(0,0)");
 }
 
-function addNoteLong(svg, note_pos, y_start, y_end)
-{
+function addNoteLong(svg, note_pos, y_start, y_end) {
     var x_left = getNotePos(note_pos);
     var new_svg = svg.polygon([[x_left, y_start], [x_left, y_end], [x_left + 44, y_end], [x_left + 44, y_start]]);
     new_svg.setAttribute("class", "note_long moving");
     new_svg.setAttribute("transform", "translate(0,0)");
 }
 
-function getFXPos(note_pos)
-{
+function getFXPos(note_pos) {
     return 53 + 100 * note_pos;
 }
 
@@ -181,16 +206,14 @@ function addFX(svg, note_pos, y) {
     new_svg.setAttribute("transform", "translate(0,0)");
 }
 
-function addFXLong(svg, note_pos, y_start, y_end)
-{
+function addFXLong(svg, note_pos, y_start, y_end) {
     var x_left = getFXPos(note_pos);
     var new_svg = svg.polygon([[x_left, y_start], [x_left, y_end], [x_left + 94, y_end], [x_left + 94, y_start]]);
     new_svg.setAttribute("class", "fx_long moving");
     new_svg.setAttribute("transform", "translate(0,0)");
 }
 
-function addOrthogonal(svg, note_pos, x_start, x_end, y)
-{
+function addOrthogonal(svg, note_pos, x_start, x_end, y) {
     var new_svg = svg.polygon([[x_start, y], [x_start, y - 15], [x_end + 50, y - 15], [x_end + 50, y]]);
     if (note_pos == 0)
         new_svg.setAttribute("class", "analog_blue moving");
@@ -199,8 +222,7 @@ function addOrthogonal(svg, note_pos, x_start, x_end, y)
     new_svg.setAttribute("transform", "translate(0,0)");
 }
 
-function addPath(svg, note_pos, x_start, x_end, y_start, y_end)
-{
+function addPath(svg, note_pos, x_start, x_end, y_start, y_end) {
     var new_svg = svg.polygon([[x_start, y_start], [x_start + 50, y_start], [x_end + 50, y_end], [x_end, y_end]]);
     if (note_pos == 0)
         new_svg.setAttribute("class", "analog_blue moving");
@@ -209,21 +231,18 @@ function addPath(svg, note_pos, x_start, x_end, y_start, y_end)
     new_svg.setAttribute("transform", "translate(0,0)");
 }
 
-function addAllMeasurePolygon(svg, total_beats)
-{
-    for (var i = 0; i <= total_beats; ++i)
-    {
+function addAllMeasurePolygon(svg, total_beats) {
+    for (var i = 0; i <= total_beats; ++i) {
         addMeasurePolygon(svg, getPosition(48 * i));
     }
 }
 
-function updateSheetByTime(g_sheet_element, time)
-{
+function updateSheetByTime(g_sheet_element, time) {
     var dist = getDistByTime(time);
     g_sheet_element.setAttribute("transform", "translate(0," + dist + ")");
 
     // update BPM time
-    $(".bpm").each(function () {
+    $(".bpm").each(function() {
         this.setAttribute("transform", "translate(0," + dist + ")");
         var original_y = this.getBBox().y;
         var current_y = original_y + dist;
@@ -233,16 +252,15 @@ function updateSheetByTime(g_sheet_element, time)
     });
 
     var c = getCByTime(time);
-    for(var bpm_list_index in bpm_list)
-    {
+    for (var bpm_list_index in bpm_list) {
         if (bpm_list[bpm_list_index][0] > c)
             break;
         bpm = bpm_list[bpm_list_index][1];
+        updateBPMUI();
     }
 }
 
-function addBPM(svg, bpm, c)
-{
+function addBPM(svg, bpm, c) {
     if (bpm_list.length != 0) {
         var y = getPosition(c);
         var new_svg = svg.polygon([[0, y], [0, y - 6], [300, y - 6], [300, y]]);
@@ -253,17 +271,18 @@ function addBPM(svg, bpm, c)
     appendBPMList(c, bpm);
 }
 
-function appendBPMList(c, new_bpm)
-{
+function appendBPMList(c, new_bpm) {
     bpm_list.push([c, new_bpm]);
 }
 
-function setFinishC(c)
-{
+function setFinishC(c) {
     finish_c = c;
 }
 
 function loading(event) {
+    // disable wheel action
+    $(window).off();
+
     // set play unclickable
     $("#play").attr("disabled", "true");
 
@@ -273,6 +292,7 @@ function loading(event) {
     // get speed / currentTime from form
     speed = +$("#speed").val();
     currentTime = +$("#time").val();
+    music_speed = +$("#music_speed").val();
 
     // initial svgs and reset global variables
     var svg_measure = $("#g_sheet_measure").svg('get');
@@ -290,8 +310,8 @@ function loading(event) {
     // load music
     var music_url = "sound/" + music_title + ".ogg";
     request = new XMLHttpRequest();
-    request.onprogress = function (evt) {
-        if (evt.lengthComputable) {  //evt.loaded the bytes browser receive
+    request.onprogress = function(evt) {
+        if (evt.lengthComputable) { //evt.loaded the bytes browser receive
             //evt.total the total bytes seted by the header
             var percentComplete = (evt.loaded / evt.total) * 100;
             $("#load_progress").val(percentComplete.toFixed(4) + "%");
@@ -300,63 +320,50 @@ function loading(event) {
     };
     request.open('GET', music_url, true);
     request.responseType = 'arraybuffer';
-    request.onload = function () {
-        context.decodeAudioData(request.response, function (buffer) {
+    request.onload = function() {
+        context.decodeAudioData(request.response, function(buffer) {
             snd = buffer;
-            startOffset = currentTime;
+            startOffset = currentTime / music_speed;
             $("#play").removeAttr("disabled");
-        }, function () { });
-    }
+            $(window).one(mousewheelevt, mousewheelAction);
+        }, function() {});
+    };
     request.send();
 
     jQuery.ajax({
         url: "sheet/" + music_title + ".js",
         dataType: 'script',
-        success: function () {
+        success: function() {
             updateSheetByTime($("#g_sheet")[0], currentTime * 1000);
         },
         async: true
     });
-
-    
-
-    $(window).one(mousewheelevt, mousewheelAction);
 }
 
 function mousewheelAction(e) {
     var evt = window.event || e; //equalize event object
     var delta = evt.originalEvent ? evt.originalEvent.detail * (-120) : evt.wheelDelta; //delta returns +120 when wheel is scrolled up, -120 when scrolled down
+    var is_playing;
     if (delta > 0) {
-        // console.log(e.originalEvent.wheelDelta);
         // Mouse Wheel Up, time--
-        // var is_playing = (source.playbackState == source.PLAYING_STATE);
-        var is_playing = source.isPlaying;
+        is_playing = (source == null) ? false : source.isPlaying;
         stopping();
-        // startOffset = startOffset - e.originalEvent.wheelDelta / 1000;
         startOffset = startOffset - delta / 1000;
-        // if (startOffset > snd.duration) startOffset = snd.duration;
-        updateSheetByTime($("#g_sheet")[0], (startOffset % snd.duration) * 1000);
-        // snd.currentTime = snd.currentTime - e.originalEvent.wheelDelta / 1000;
-        // updateSheetByTime($("#g_sheet")[0], snd.currentTime * 1000);
+        updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
         if (is_playing)
             playing();
         else
-            $("#time").val((startOffset % snd.duration).toFixed(4));
-    }
-    else {
-        // console.log(e.originalEvent.wheelDelta);
+            $("#time").val(((startOffset * music_speed) % snd.duration).toFixed(4));
+    } else {
         // Mouse Wheel Down, time++
-        // var is_playing = (source.playbackState == source.PLAYING_STATE);
-        var is_playing = source.isPlaying;
+        is_playing = (source == null) ? false : source.isPlaying;
         stopping();
-        // startOffset = startOffset - e.originalEvent.wheelDelta / 1000;
         startOffset = startOffset - delta / 1000;
-        // if (startOffset > snd.duration) startOffset = snd.duration;
-        updateSheetByTime($("#g_sheet")[0], (startOffset % snd.duration) * 1000);
+        updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
         if (is_playing)
             playing();
         else
-            $("#time").val((startOffset % snd.duration).toFixed(4));
+            $("#time").val(((startOffset * music_speed) % snd.duration).toFixed(4));
     }
     $(window).one(mousewheelevt, mousewheelAction);
 }
@@ -364,7 +371,7 @@ function mousewheelAction(e) {
 function update_time(event) {
     // if (source.playbackState == source.PLAYING_STATE)
     if (source.isPlaying == true)
-        $("#time").val(((context.currentTime - startTime + startOffset) % snd.duration).toFixed(4));
+        $("#time").val(((((context.currentTime - startTime + startOffset) * music_speed) % snd.duration)).toFixed(4));
     setTimeout(update_time, 1000 / 60);
 }
 
@@ -383,32 +390,32 @@ function select_song(event) {
     $("#time").val("0");
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     jQuery.fx.interval = 1;
 
-	$("#load").on("click", loading);
-	$("#play").on("click", playing);
-	$("#stop").on("click", stopping);
-	$("#copy").on("click", copying);
+    $("#load").on("click", loading);
+    $("#play").on("click", playing);
+    $("#stop").on("click", stopping);
+    $("#copy").on("click", copying);
 
-	$("#music").on("change", select_song);
+    $("#music").on("change", select_song);
 
-	$("#play").attr("disabled", "true");
-	$("#stop").attr("disabled", "true");
-	$("#load").removeAttr("disabled");
+    $("#play").attr("disabled", "true");
+    $("#stop").attr("disabled", "true");
+    $("#load").removeAttr("disabled");
 
-	$("#g_sheet").svg();
-	$("#g_bpm").svg();
-	$("#g_sheet_measure").svg();
-	$("#g_sheet_long").svg();
-	$("#g_sheet_analog").svg();
-	$("#g_sheet_short").svg();
+    $("#g_sheet").svg();
+    $("#g_bpm").svg();
+    $("#g_sheet_measure").svg();
+    $("#g_sheet_long").svg();
+    $("#g_sheet_analog").svg();
+    $("#g_sheet_short").svg();
 
-	svg_measure = $("#g_sheet_measure").svg('get');
-	svg_short = $("#g_sheet_short").svg('get');
-	svg_analog = $("#g_sheet_analog").svg('get');
-	svg_long = $("#g_sheet_long").svg('get');
-	svg_bpm = $("#g_bpm").svg('get');
+    svg_measure = $("#g_sheet_measure").svg('get');
+    svg_short = $("#g_sheet_short").svg('get');
+    svg_analog = $("#g_sheet_analog").svg('get');
+    svg_long = $("#g_sheet_long").svg('get');
+    svg_bpm = $("#g_bpm").svg('get');
 
     // load data from url
     var url_speed = $.url().param("speed");
@@ -423,5 +430,5 @@ $(document).ready(function () {
 
     // Web Audio API
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    context = new AudioContext();
+    // context = new AudioContext();
 });
