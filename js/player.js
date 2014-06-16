@@ -16,6 +16,8 @@ mousewheelevt = (/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mou
 
 finish_c = 48 * 4 * 90;
 
+sheet_string = "";
+
 function getPosition(c) {
     return 510 - ((c / 48) * 500 / 4) * speed;
 }
@@ -77,7 +79,8 @@ function moving_bpm() {
             var dist = 506 - current_y;
             var time = getTimeByDist(dist);
             var goal = 506 - original_y;
-            $(this).animate({ svgTransform: 'translate(0 ' + goal + ')' }, time, "linear", function() {
+            if (time < 100) return;
+            $(this).animate({ svgTransform: 'translate(0 ' + goal + ')' }, time, "linear", function () {
                 var new_bpm = $(this).data("bpm");
                 $(this).removeClass("moving");
                 updateBPM(new_bpm);
@@ -154,16 +157,11 @@ function updateBPM(new_bpm) {
         $("#speed").val(new_speed);
         window.speed = new_speed;
         var c_time = +$("#time").val();
-        jQuery.ajax({
-            url: "sheet/" + music_title + ".js",
-            dataType: 'script',
-            success: function() {
-                updateSheetByTime($("#g_sheet")[0], c_time * 1000);
-                window.bpm = new_bpm;
-                playing();
-            },
-            async: true
-        });
+        
+        eval(sheet_string);
+        updateSheetByTime($("#g_sheet")[0], c_time * 1000);
+        window.bpm = new_bpm;
+        $(".bpm").promise().done(playing);
     } else {
         window.bpm = new_bpm;
         playing();
@@ -333,7 +331,8 @@ function loading(event) {
     jQuery.ajax({
         url: "sheet/" + music_title + ".js",
         dataType: 'script',
-        success: function() {
+        success: function (data) {
+            window.sheet_string = data;
             updateSheetByTime($("#g_sheet")[0], currentTime * 1000);
         },
         async: true
@@ -370,9 +369,10 @@ function mousewheelAction(e) {
 
 function update_time(event) {
     // if (source.playbackState == source.PLAYING_STATE)
-    if (source.isPlaying == true)
+    if (source.isPlaying == true) {
         $("#time").val(((((context.currentTime - startTime + startOffset) * music_speed) % snd.duration)).toFixed(4));
-    setTimeout(update_time, 1000 / 60);
+        setTimeout(update_time, 1000 / 60);
+    }
 }
 
 function copying(event) {
