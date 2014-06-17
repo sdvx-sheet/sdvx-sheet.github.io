@@ -251,11 +251,15 @@ function updateSheetByTime(g_sheet_element, time) {
     // update BPM time
     $(".bpm").each(function() {
         this.setAttribute("transform", "translate(0," + dist + ")");
-        var original_y = this.getBBox().y;
+        // var original_y = this.getBBox().y;
+        var original_y = parseFloat(this.getAttribute("points").split(" ")[1].split(",")[1]);
         var current_y = original_y + dist;
         var goal = 506 - original_y;
         if (dist > goal) $(this).removeClass("moving");
-        else $(this).addClass("moving");
+        else {
+            $(this).addClass("moving");
+            $(this).removeClass("invisible");
+        }
     });
 
     var c = getCByTime(time);
