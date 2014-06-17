@@ -428,6 +428,14 @@ function select_song(event) {
     $("#time_bar").val("0.0");
 }
 
+function change_color() {
+    // change analog color
+    var red_color = $("#red_color").val();
+    var blue_color = $("#blue_color").val();
+    $(".analog_red").css({ fill: red_color });
+    $(".analog_blue").css({ fill: blue_color });
+}
+
 $(document).ready(function() {
     jQuery.fx.interval = 1;
 
