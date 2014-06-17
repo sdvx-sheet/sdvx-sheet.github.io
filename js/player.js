@@ -18,6 +18,8 @@ finish_c = 48 * 4 * 90;
 
 sheet_string = "";
 
+update_time_timer = null;
+
 function getPosition(c) {
     return 510 - ((c / 48) * 500 / 4) * speed;
 }
@@ -144,6 +146,8 @@ function playing(event) {
     $("#load").attr("disabled", "true");
     $("#stop").removeAttr("disabled");
 
+    if (window.update_time_timer != null)
+        clearTimeout(window.update_time_timer);
     update_time();
 }
 
@@ -404,7 +408,7 @@ function update_time(event) {
         var time = ((((context.currentTime - startTime + startOffset) * music_speed) % snd.duration)).toFixed(4);
         $("#time").val(time);
         $("#time_bar").val(time);
-        setTimeout(update_time, 1000 / 10);
+        window.update_time_timer = setTimeout(update_time, 1000 / 10);
     }
 }
 
