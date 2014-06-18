@@ -299,6 +299,8 @@ function setFinishC(c) {
 function loading(event) {
     // disable wheel action
     $(window).off();
+    // disable keyup action
+    $(document).off();
 
     // set play unclickable
     $("#play").attr("disabled", "true");
@@ -346,6 +348,7 @@ function loading(event) {
             $("#time_bar").attr("max", snd.duration);
             $("#time_bar").on("input", dragTimeBar);
             $("#time_bar").on("change", releaseTimeBar);
+            $(document).on('keyup', on_key_up);
         }, function() {});
     };
     request.send();
@@ -436,6 +439,17 @@ function change_color() {
     var blue_color = $("#blue_color").val();
     $(".analog_red").css({ fill: red_color });
     $(".analog_blue").css({ fill: blue_color });
+}
+
+function on_key_up(e) {
+    if (e.keyCode == 32) {
+        var is_playing = (window.source == null) ? false : window.source.isPlaying;
+        if (is_playing) {
+            stopping();
+        } else {
+            playing();
+        }
+    }
 }
 
 $(document).ready(function() {
