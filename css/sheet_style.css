@@ -50,3 +50,12 @@
 .time_bar {
     width: 465px;
 }
+
+.player_svg {
+    display: block;
+    margin: auto;
+}
+
+div.options {
+    text-align: center;
+}

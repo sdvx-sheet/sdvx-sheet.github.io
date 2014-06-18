@@ -11,85 +11,87 @@
     <script src="js/purl.js"></script>
     <link type="text/css" href="css/sheet_style.css" rel="stylesheet" media="all" />
 </head>
-<body>
-    <select id="music">
-        <optgroup label="lv13">
-            <option value="hanakagerou_e">華陽炎-Hana Kagerou-</option>
-			<option value="lunatic_rough_party_e">Lunatic Rough Party!!</option>
-            <option value="lostone_e">ロストワンの号哭</option>
-        </optgroup>
-        <optgroup label="lv14">
-            <option value="eight_e">8 -eight-</option>
-            <option value="antinomie_e">Antinomie (SDVX EDIT)</option>
-			<option value="bubble_raver_e">BUBBLE RAVER</option>
-			<option value="cirno_break_e">Cirno Break</option>
-			<option value="crazy_cinema_story_e">crazy cinema story</option>
-			<option value="daily_lunch_special_deliciousremix_e">Daily Lunch Special ～DeliciousREMIX～</option>
-			<option value="dawn_of_asia_e">Dawn of Asia</option>
-			<option value="dirty_rouge_e">- dirty rouge -</option>
-			<option value="double_universe_e">Double Universe</option>
-			<option value="electric_sister_bitch_e">ectric "Sister" Bitch</option>
-			<option value="engraved_mark_e">Engraved Mark</option>
-			<option value="fairy_dancing_in_lake_e">#Fairy_dancing_in_lake</option>
-            <option value="kodokunobannin_e">孤独の番人</option>
-        </optgroup>
-        <optgroup label="lv15">
-            <option value="hyena_e">HYENA</option>
-        </optgroup>
-</select>
-	<input type="button" id="load" value="Load" />
-    <input type="text" id="load_progress" disabled size="7">
-    <input type="button" id="play" value="Play" />
-    <input type="button" id="stop" value="Stop" />
-    <input type="button" id="copy" value="Copy" />
-    <br />
-    BPM: <input type="text" id="bpm" value="0" size="3" disabled />
-    Speed: <input type="text" id="speed" value="1.0" size="1" />
-    BPM × Speed: <input type="text" id="bpm_times_speed" value="0" size="5" disabled />
-    Time: <input type="text" id="time" value="0" size="5" />
-    <br />
-    <input id="time_bar" class="time_bar" type="range" min="0.0" max="0.0" step="0.1" />
-    <br />
-    Music Speed: <input type="text" id="music_speed" value="1.0" size="1" />
-    Contant BPM: <input type="checkbox" id="constant_bpm" />
-    Blue Color: <input type="text" value="#80a0ff" id="blue_color" onchange="change_color();" />
-    Red Color: <input type="text" value="#ff20c0" id="red_color" onchange="change_color();" />
-    <br />
-    <svg width="350" height="800" viewBox="0 0 450 600" preserveAspectRatio=none>
-        <g id="g_background">
-            <polygon class="sheet_background" points="50,10 50,510 250,510 250,10" />
-            <polygon class="sheet_background_leftside" points="0,10 0,510 50,510 50,10" />
-            <polygon class="sheet_background_rightside" points="250,10 250,510 300,510 300,10" />
-            <polygon class="sheet_background_line" points="47,10 47,510 53,510 53,10" />
-            <polygon class="sheet_background_line" points="97,10 97,510 103,510 103,10" />
-            <polygon class="sheet_background_line" points="147,10 147,510 153,510 153,10" />
-            <polygon class="sheet_background_line" points="197,10 197,510 203,510 203,10" />
-            <polygon class="sheet_background_line" points="247,10 247,510 253,510 253,10" />
-        </g>
+    <body>
+        <div id="options" class="options">
+            <select id="music">
+                <optgroup label="lv13">
+                    <option value="hanakagerou_e">華陽炎-Hana Kagerou-</option>
+                    <option value="lunatic_rough_party_e">Lunatic Rough Party!!</option>
+                    <option value="lostone_e">ロストワンの号哭</option>
+                </optgroup>
+                <optgroup label="lv14">
+                    <option value="eight_e">8 -eight-</option>
+                    <option value="antinomie_e">Antinomie (SDVX EDIT)</option>
+                    <option value="bubble_raver_e">BUBBLE RAVER</option>
+                    <option value="cirno_break_e">Cirno Break</option>
+                    <option value="crazy_cinema_story_e">crazy cinema story</option>
+                    <option value="daily_lunch_special_deliciousremix_e">Daily Lunch Special ～DeliciousREMIX～</option>
+                    <option value="dawn_of_asia_e">Dawn of Asia</option>
+                    <option value="dirty_rouge_e">- dirty rouge -</option>
+                    <option value="double_universe_e">Double Universe</option>
+                    <option value="electric_sister_bitch_e">ectric "Sister" Bitch</option>
+                    <option value="engraved_mark_e">Engraved Mark</option>
+                    <option value="fairy_dancing_in_lake_e">#Fairy_dancing_in_lake</option>
+                    <option value="kodokunobannin_e">孤独の番人</option>
+                </optgroup>
+                <optgroup label="lv15">
+                    <option value="hyena_e">HYENA</option>
+                </optgroup>
+            </select>
+            <input type="button" id="load" value="Load" />
+            <input type="text" id="load_progress" disabled size="7">
+            <input type="button" id="play" value="Play" />
+            <input type="button" id="stop" value="Stop" />
+            <input type="button" id="copy" value="Copy" />
+            <br />
+            BPM: <input type="text" id="bpm" value="0" size="3" disabled />
+            Speed: <input type="text" id="speed" value="1.0" size="1" />
+            BPM × Speed: <input type="text" id="bpm_times_speed" value="0" size="5" disabled />
+            Time: <input type="text" id="time" value="0" size="5" />
+            <br />
+            <input id="time_bar" class="time_bar" type="range" min="0.0" max="0.0" step="0.1" />
+            <br />
+            Music Speed: <input type="text" id="music_speed" value="1.0" size="1" />
+            Contant BPM: <input type="checkbox" id="constant_bpm" />
+            Blue Color: <input type="text" value="#80a0ff" id="blue_color" onchange="change_color();" />
+            Red Color: <input type="text" value="#ff20c0" id="red_color" onchange="change_color();" />
+        </div>
+        <br />
+        <svg class="player_svg" width="230" height="750" viewBox="0 0 300 600" preserveAspectRatio="none">
+            <g id="g_background">
+                <polygon class="sheet_background" points="50,10 50,510 250,510 250,10" />
+                <polygon class="sheet_background_leftside" points="0,10 0,510 50,510 50,10" />
+                <polygon class="sheet_background_rightside" points="250,10 250,510 300,510 300,10" />
+                <polygon class="sheet_background_line" points="47,10 47,510 53,510 53,10" />
+                <polygon class="sheet_background_line" points="97,10 97,510 103,510 103,10" />
+                <polygon class="sheet_background_line" points="147,10 147,510 153,510 153,10" />
+                <polygon class="sheet_background_line" points="197,10 197,510 203,510 203,10" />
+                <polygon class="sheet_background_line" points="247,10 247,510 253,510 253,10" />
+            </g>
 
-        <g id="g_bpm">
+            <g id="g_bpm">
 
-        </g>
+            </g>
 
-        <g id="g_sheet">
-            <g id="g_sheet_measure"></g>
-            <g id="g_sheet_long"></g>
-            <g id="g_sheet_analog"></g>
-            <g id="g_sheet_short"></g>
-        </g>
+            <g id="g_sheet">
+                <g id="g_sheet_measure"></g>
+                <g id="g_sheet_long"></g>
+                <g id="g_sheet_analog"></g>
+                <g id="g_sheet_short"></g>
+            </g>
 
-        <g id="g_check">
-            <polygon class="sheet_check_line" points="0,506 0,510 300,510 300,506" />
-            <polygon class="sheet_background" points="50,510 50,610 250,610 250,510" />
-            <polygon class="sheet_background_leftside" points="0,510 0,610 50,610 50,510" />
-            <polygon class="sheet_background_rightside" points="250,510 250,610 300,610 300,510" />
-            <polygon class="sheet_background_line" points="47,510 47,610 53,610 53,510" />
-            <polygon class="sheet_background_line" points="97,510 97,610 103,610 103,510" />
-            <polygon class="sheet_background_line" points="147,510 147,610 153,610 153,510" />
-            <polygon class="sheet_background_line" points="197,510 197,610 203,610 203,510" />
-            <polygon class="sheet_background_line" points="247,510 247,610 253,610 253,510" />
-        </g>
+            <g id="g_check">
+                <polygon class="sheet_check_line" points="0,506 0,510 300,510 300,506" />
+                <polygon class="sheet_background" points="50,510 50,610 250,610 250,510" />
+                <polygon class="sheet_background_leftside" points="0,510 0,610 50,610 50,510" />
+                <polygon class="sheet_background_rightside" points="250,510 250,610 300,610 300,510" />
+                <polygon class="sheet_background_line" points="47,510 47,610 53,610 53,510" />
+                <polygon class="sheet_background_line" points="97,510 97,610 103,610 103,510" />
+                <polygon class="sheet_background_line" points="147,510 147,610 153,610 153,510" />
+                <polygon class="sheet_background_line" points="197,510 197,610 203,610 203,510" />
+                <polygon class="sheet_background_line" points="247,510 247,610 253,610 253,510" />
+            </g>
 
-    </svg>
-</body>
+        </svg>
+    </body>
 </html>
