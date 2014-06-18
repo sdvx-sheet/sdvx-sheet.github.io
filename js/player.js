@@ -20,6 +20,8 @@ sheet_string = "";
 
 update_time_timer = null;
 
+player_height = 800;
+
 function getPosition(c) {
     return 510 - ((c / 48) * 500 / 4) * speed;
 }
@@ -65,7 +67,7 @@ function getCByTime(time) {
 function moving_sheet() {
     var current_sheet = $("#g_sheet")[0];
     var original_y = current_sheet.getBBox().y;
-    var current_y = original_y + current_sheet.getCTM().f;
+    var current_y = original_y + current_sheet.getCTM().f / current_sheet.getCTM().d;
     var dist = 506 - current_y;
     var time = getTimeByDist(dist);
     var goal = 506 - original_y;
@@ -77,7 +79,7 @@ function moving_bpm() {
         $(".bpm.moving").each(function(index) {
             var current_sheet = this;
             var original_y = current_sheet.getBBox().y;
-            var current_y = original_y + current_sheet.getCTM().f;
+            var current_y = original_y + current_sheet.getCTM().f / current_sheet.getCTM().d;
             var dist = 506 - current_y;
             var time = getTimeByDist(dist);
             var goal = 506 - original_y;
