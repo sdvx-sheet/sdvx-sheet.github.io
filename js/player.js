@@ -88,6 +88,7 @@ function moving_bpm() {
                 $(this).animate({ svgTransform: 'translate(0 ' + goal + ')' }, time, "linear", function () {
                     var new_bpm = $(this).data("bpm");
                     $(this).removeClass("moving");
+                    $(this).addClass("invisible");
                     updateBPM(new_bpm);
                     console.log("update BPM");
                 });
@@ -258,7 +259,8 @@ function updateSheetByTime(g_sheet_element, time) {
     $(".bpm").each(function() {
         this.setAttribute("transform", "translate(0," + dist + ")");
         // var original_y = this.getBBox().y;
-        var original_y = parseFloat(this.getAttribute("points").split(" ")[1].split(",")[1]);
+        var this_polygon = $(this).find("polygon")[0];
+        var original_y = parseFloat(this_polygon.getAttribute("points").split(" ")[1].split(",")[1]);
         var current_y = original_y + dist;
         var goal = 506 - original_y;
         if (dist > goal) $(this).removeClass("moving");
@@ -280,10 +282,17 @@ function updateSheetByTime(g_sheet_element, time) {
 function addBPM(svg, bpm, c) {
     if (bpm_list.length != 0) {
         var y = getPosition(c);
-        var new_svg = svg.polygon([[0, y], [0, y - 6], [300, y - 6], [300, y]]);
-        new_svg.setAttribute("class", "bpm moving");
-        new_svg.setAttribute("transform", "translate(0,0)");
-        new_svg.setAttribute("data-bpm", bpm);
+        var new_group = svg.group(null);
+        $(new_group).svg();
+        var new_group_svg = $(new_group).svg('get');
+        var new_polygon = new_group_svg.polygon([[0, y], [0, y - 6], [300, y - 6], [300, y]]);
+        new_group.setAttribute("class", "bpm moving");
+        new_group.setAttribute("transform", "translate(0,0)");
+        new_group.setAttribute("data-bpm", bpm);
+
+        // Add new bpm text
+        var new_text = new_group_svg.text(null, 300, y, bpm.toString());
+        $(new_text).addClass("bpm_text");
     }
     appendBPMList(c, bpm);
 }
