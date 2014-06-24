@@ -142,6 +142,7 @@ function playing(event) {
     window.source.isPlaying = true;
     window.source.onended = source_onended;
     window.source.playbackRate.value = music_speed;
+    dragVolBar();
     window.source.start(0, ((startOffset * music_speed) % snd.duration));
 
     moving();
@@ -357,6 +358,8 @@ function loading(event) {
             $("#time_bar").attr("max", snd.duration);
             $("#time_bar").on("input", dragTimeBar);
             $("#time_bar").on("change", releaseTimeBar);
+            $("#vol_bar").on("input", dragVolBar);
+            // $("#vol_bar").on("change", releaseVolBar);
             $(document).on('keyup', on_key_up);
         }, function() {});
     };
@@ -371,6 +374,11 @@ function loading(event) {
         },
         async: true
     });
+}
+
+function dragVolBar(e) {
+    var vol = +$("#vol_bar").val();
+    window.source.gain.value = vol / 100;
 }
 
 function dragTimeBar(e) {
@@ -398,6 +406,7 @@ function mousewheelAction(e) {
         stopping();
         startOffset = startOffset - delta / 1000;
         updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
+        $("#time_bar").val(startOffset);
         if (is_playing)
             playing();
         else
@@ -408,6 +417,7 @@ function mousewheelAction(e) {
         stopping();
         startOffset = startOffset - delta / 1000;
         updateSheetByTime($("#g_sheet")[0], ((startOffset * music_speed) % snd.duration) * 1000);
+        $("#time_bar").val(startOffset);
         if (is_playing)
             playing();
         else
