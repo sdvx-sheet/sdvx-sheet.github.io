@@ -6,6 +6,8 @@ startTime = 0;
 source = null;
 request = null;
 
+gain_node = null;
+
 speed = 1.0;
 currentTime = 0;
 music_speed = 1.0;
@@ -138,12 +140,15 @@ function playing(event) {
     window.source = context.createBufferSource();
     window.source.buffer = snd;
     window.source.loop = false;
-    window.source.connect(context.destination);
+    window.gain_node = context.createGain();
+    window.source.connect(window.gain_node);
+    window.gain_node.connect(context.destination);
+    // window.source.connect(context.destination);
     window.source.isPlaying = true;
     window.source.onended = source_onended;
     window.source.playbackRate.value = music_speed;
     dragVolBar();
-    window.source.start(0, ((startOffset * music_speed) % snd.duration));
+    window.source.start(0, ((startOffset * music_speed + (+$("#shift").val())) % snd.duration));
 
     moving();
     $("#play").attr("disabled", "true");
@@ -343,7 +348,7 @@ function loading(event) {
         if (evt.lengthComputable) { //evt.loaded the bytes browser receive
             //evt.total the total bytes seted by the header
             var percentComplete = (evt.loaded / evt.total) * 100;
-            $("#load_progress").val(percentComplete.toFixed(4) + "%");
+            $("#load_progress").val(percentComplete.toFixed(1) + "%");
             // console.log(percentComplete);
         }
     };
@@ -378,7 +383,8 @@ function loading(event) {
 
 function dragVolBar(e) {
     var vol = +$("#vol_bar").val();
-    window.source.gain.value = vol / 100;
+    // window.source.gain.value = vol / 100;
+    window.gain_node.gain.value = vol / 100;
 }
 
 function dragTimeBar(e) {

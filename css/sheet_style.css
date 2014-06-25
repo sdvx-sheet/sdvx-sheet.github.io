@@ -1,5 +1,15 @@
 ﻿body {
+    font-family: Consolas, 微軟正黑體;
+}
 
+select {
+  font-family: inherit;
+}
+
+input {
+    font-family: inherit;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .sheet_background {

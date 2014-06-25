@@ -76,23 +76,24 @@
                 </optgroup>
             </select>
             <input type="button" id="load" value="Load" />
-            <input type="text" id="load_progress" disabled size="7">
+            <input type="text" id="load_progress" disabled size="6">
             <input type="button" id="play" value="Play" />
             <input type="button" id="stop" value="Stop" />
             <input type="button" id="copy" value="Copy" />
             <br />
-            BPM: <input type="text" id="bpm" value="0" size="3" disabled />
-            Speed: <input type="text" id="speed" value="1.0" size="1" />
-            BPM × Speed: <input type="text" id="bpm_times_speed" value="0" size="5" disabled />
-            Time: <input type="text" id="time" value="0" size="5" />
+            BPM: <input type="text" id="bpm" value="0" size="5" disabled />
+            Speed: <input type="text" id="speed" value="1.0" size="3" />
+            BPM × Speed: <input type="text" id="bpm_times_speed" value="0" size="7" disabled />
+            Time: <input type="text" id="time" value="0" size="7" />
             Volume: <input id="vol_bar" class="vol_bar" type="range" min="0" max="100" step="1" value="100" />
             <br />
             <input id="time_bar" class="time_bar" type="range" min="0.0" max="0.0" step="0.1" />
+            Shift: <input type="text" id="shift" value="0" size="6" />
             <br />
-            Music Speed: <input type="text" id="music_speed" value="1.0" size="1" />
+            Music Speed: <input type="text" id="music_speed" value="1.0" size="3" />
             Contant BPM: <input type="checkbox" id="constant_bpm" />
-            Blue Color: <input type="text" value="#80a0ff" id="blue_color" onchange="change_color();" />
-            Red Color: <input type="text" value="#ff20c0" id="red_color" onchange="change_color();" />
+            Blue Color: <input type="text" value="#80a0ff" id="blue_color" onchange="change_color();" size="8" />
+            Red Color: <input type="text" value="#ff20c0" id="red_color" onchange="change_color();" size="8" />
         </div>
         <svg class="player_svg" width="250" height="750" viewBox="0 0 350 600" preserveAspectRatio="none">
             <g id="g_background">
