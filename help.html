@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link type="text/css" href="css/sheet_style.css" rel="stylesheet" media="all" />
+</head>
+<body>
+<div>
+    <ul>
+        <li>
+            注意事項
+            <ul>
+                <li>播放器由 Javascript 和 html5 所寫的，並且還需要 Web Audio API 的支持，因此瀏覽器若不支援則無法使用</li>
+                <li>推薦使用 Chrome 瀏覽器，Firefox 沒有測試太多但目前沒太大問題</li>
+            </ul>
+        </li>
+        <li>
+            第一排
+            <ul>
+                <li>選擇歌曲，並按下 Load，旁邊會顯示出歌曲讀取進度，等到 100% 之後就可以按下 Play 播放</li>
+                <li>歌曲播放中，可以按下 Stop 來暫停播放，要繼續播放則可以再按一次 Play</li>
+                <li>可以使用空白鍵來當作 Stop 和 Play 的功能</li>
+                <li>Copy 可以將目前的歌曲、速度以及時間記錄在網址列中，只要用這個網址列就可以直接選到一模一樣的狀態</li>
+            </ul>
+        </li>
+        <li>
+            第二排
+            <ul>
+                <li>BPM 為顯示目前歌曲現在時間的 BPM</li>
+                <li>Speed 為譜面速度，可自由調整，調整完之後請記得重新按 Load</li>
+                <li>BPM × Speed 顯示兩者相乘之後的譜面速度</li>
+                <li>Time 為目前歌曲的時間，不推薦手動調整，可以使用第三排的 bar 來調整歌曲時間</li>
+                <li>Volume 可以調整歌曲音量</li>
+            </ul>
+        </li>
+        <li>
+            第三排
+            <ul>
+                <li>左邊的 bar 為目前歌曲的時間位置，可以拖曳來調整時間</li>
+                <li>調整時間也可以使用滑鼠滾輪</li>
+                <li>Shift 為當音樂和譜面不對拍的時候，可以自由調整音樂的 timing，例如音樂太慢想要往後延遲一點就設定一個 > 0 的數字，單位為秒</li>
+            </ul>
+        </li>
+        <li>
+            第四排
+            <ul>
+                <li>Music Speed 為調整整個歌曲的速度，例如調為 0.7 整個歌曲會放慢（音調也會降低），可以拿來當慢速練習用</li>
+                <li>Contant BPM 打勾之後，當遇到變速的時候，Speed 會自動調整讓 BPM × Speed 的值不會改變（會使得譜面在變速的時候稍微停頓一下），用來對付一些可怕的變速歌 ex. Lunartic Rough Party</li>
+                <li>Blur / Red Color 可以自由調整藍色跟紅色旋鈕的顏色</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
