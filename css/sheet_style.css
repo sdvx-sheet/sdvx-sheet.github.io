@@ -77,3 +77,7 @@ div.options {
     font-weight: bold;
     font-family: Consolas;
 }
+
+.help_div {
+    text-align: center;
+}
