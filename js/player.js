@@ -1,6 +1,7 @@
 ﻿bpm = 0;
 snd = null;
-context = new AudioContext();
+// context = new AudioContext();
+context = null;
 startOffset = 0;
 startTime = 0;
 source = null;
@@ -519,5 +520,5 @@ $(document).ready(function() {
 
     // Web Audio API
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    // context = new AudioContext();
+    context = new AudioContext();
 });
