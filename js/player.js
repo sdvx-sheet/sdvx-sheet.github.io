@@ -111,6 +111,8 @@ function source_onended() {
         startOffset = (snd.duration - 0.1) / music_speed;
         $("#play").removeAttr("disabled");
         $("#load").removeAttr("disabled");
+        $("#bpm_times_speed").removeAttr("disabled");
+        $("#speed").removeAttr("disabled");
     }
 }
 
@@ -130,6 +132,8 @@ function stopping(event) {
 
     $("#play").removeAttr("disabled");
     $("#load").removeAttr("disabled");
+    $("#bpm_times_speed").removeAttr("disabled");
+    $("#speed").removeAttr("disabled");
 
     $("#time").val(((window.startOffset * music_speed) % snd.duration).toFixed(4));
 }
@@ -154,6 +158,8 @@ function playing(event) {
     moving();
     $("#play").attr("disabled", "true");
     $("#load").attr("disabled", "true");
+    $("#bpm_times_speed").attr("disabled", "true");
+    $("#speed").attr("disabled", "true");
     $("#stop").removeAttr("disabled");
 
     if (window.update_time_timer != null)
@@ -377,6 +383,8 @@ function loading(event) {
         success: function (data) {
             window.sheet_string = data;
             updateSheetByTime($("#g_sheet")[0], currentTime * 1000);
+            $("#speed").removeAttr("disabled");
+            $("#bpm_times_speed").removeAttr("disabled");
         },
         async: true
     });
@@ -455,6 +463,8 @@ function select_song(event) {
     $("#play").attr("disabled", "true");
     $("#stop").attr("disabled", "true");
     $("#load").removeAttr("disabled");
+    $("#bpm_times_speed").attr("disabled", "true");
+    $("#speed").attr("disabled", "true");
     $("#time").val("0");
     $("#time_bar").val("0.0");
 }
@@ -478,6 +488,30 @@ function on_key_up(e) {
     }
 }
 
+function reloadSheet() {
+    $("#g_sheet_measure").html("");
+    $("#g_sheet_short").html("");
+    $("#g_sheet_analog").html("");
+    $("#g_sheet_long").html("");
+    $("#g_bpm").html("");
+    bpm_list = [];
+    var c_time = +$("#time").val();
+    eval(sheet_string);
+    updateSheetByTime($("#g_sheet")[0], c_time * 1000);
+}
+
+function userUpdateBPMTimeSpeed(e) {
+    window.speed = +$("#bpm_times_speed").val() / window.bpm;
+    $("#speed").val(window.speed);
+    reloadSheet();
+}
+
+function userUpdateSpeed(e) {
+    window.speed = +$("#speed").val();
+    $("#bpm_times_speed").val(window.speed * window.bpm);
+    reloadSheet();
+}
+
 $(document).ready(function() {
     jQuery.fx.interval = 1;
 
@@ -491,6 +525,8 @@ $(document).ready(function() {
     $("#play").attr("disabled", "true");
     $("#stop").attr("disabled", "true");
     $("#load").removeAttr("disabled");
+    $("#bpm_times_speed").on("change", userUpdateBPMTimeSpeed);
+    $("#speed").on("change", userUpdateSpeed);
 
     $("#g_sheet").svg();
     $("#g_bpm").svg();
