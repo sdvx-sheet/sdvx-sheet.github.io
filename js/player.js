@@ -432,6 +432,14 @@ function userUpdateSpeed(e) {
     reloadSheet();
 }
 
+function sheetStyleChange(e) {
+    if ($("#sdvx_style").prop("checked") == true) {
+        $("#player_svg").addClass("sdvx_style_svg");
+    } else {
+        $("#player_svg").removeClass("sdvx_style_svg");
+    }
+}
+
 var domActions = {
     initDomEvent: function (e) {
         $("#load").on("click", loading);
@@ -443,6 +451,8 @@ var domActions = {
 
         $("#bpm_times_speed").on("change", userUpdateBPMTimeSpeed);
         $("#speed").on("change", userUpdateSpeed);
+
+        $("#sdvx_style").on("change", sheetStyleChange);
     },
 };
 

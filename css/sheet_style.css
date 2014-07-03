@@ -71,6 +71,14 @@ input {
     margin: auto;
 }
 
+.sdvx_style_svg {
+    -webkit-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
+    -moz-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
+    -ms-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
+    -o-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
+    transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
+}
+
 div.options {
     text-align: center;
 }

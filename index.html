@@ -2,12 +2,13 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>SDVX 譜面播放器</title>
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/jquery.svg/jquery.svg.min.js"></script>
     <script src="js/jquery.svg/jquery.svgdom.min.js"></script>
     <script src="js/TweenMax.min.js"></script>
     <script src="js/TimelineMax.min.js"></script>
+    <script src="js/plugins/CSSPlugin.min.js"></script>
     <script src="js/purl.js"></script>
     <script src="js/player.js"></script>
     <link type="text/css" href="css/sheet_style.css" rel="stylesheet" media="all" />
@@ -141,12 +142,14 @@
         <input id="time_bar" class="time_bar" type="range" min="0.0" max="0.0" step="0.1" />
         Shift: <input type="text" id="shift" value="0" size="6" />
         <br />
+        SDVX Style: <input type="checkbox" id="sdvx_style" />
         Music Speed: <input type="text" id="music_speed" value="1.0" size="3" />
         Contant BPM: <input type="checkbox" id="constant_bpm" />
         Blue Color: <input type="text" value="#80a0ff" id="blue_color" onchange="change_color();" size="8" />
         Red Color: <input type="text" value="#ff20c0" id="red_color" onchange="change_color();" size="8" />
     </div>
-    <svg class="player_svg" width="250" height="750" viewBox="0 0 350 600" preserveAspectRatio="none">
+
+    <svg class="player_svg" width="250" height="750" viewBox="0 0 350 510" preserveAspectRatio="none" id="player_svg" >
         <g id="g_background">
             <polygon class="sheet_background" points="50,10 50,510 250,510 250,10" />
             <polygon class="sheet_background_leftside" points="0,10 0,510 50,510 50,10" />
@@ -170,17 +173,11 @@
 
         <g id="g_check">
             <polygon class="sheet_check_line" points="0,506 0,510 300,510 300,506" />
-            <polygon class="sheet_background" points="50,510 50,610 250,610 250,510" />
-            <polygon class="sheet_background_leftside" points="0,510 0,610 50,610 50,510" />
-            <polygon class="sheet_background_rightside" points="250,510 250,610 300,610 300,510" />
-            <polygon class="sheet_background_line" points="47,510 47,610 53,610 53,510" />
-            <polygon class="sheet_background_line" points="97,510 97,610 103,610 103,510" />
-            <polygon class="sheet_background_line" points="147,510 147,610 153,610 153,510" />
-            <polygon class="sheet_background_line" points="197,510 197,610 203,610 203,510" />
-            <polygon class="sheet_background_line" points="247,510 247,610 253,610 253,510" />
+
         </g>
 
     </svg>
+
     <div class="help_div">
         <a href="help.html" target="_blank">How to use?</a>
         <!-- FC2計數器 開始 -->
