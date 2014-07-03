@@ -62,6 +62,10 @@ input {
     width: 465px;
 }
 
+.vol_bar {
+    width: 80px;
+}
+
 .player_svg {
     display: block;
     margin: auto;
