@@ -440,8 +440,13 @@ function sheetStyleChange(e) {
     }
 }
 
+function searching(e) {
+    window.open("search.html", "SDVX 譜面搜尋", "toolbar=0, width=800, height=600");
+}
+
 var domActions = {
     initDomEvent: function (e) {
+        $("#search").on("click", searching);
         $("#load").on("click", loading);
         $("#play").on("click", playing);
         $("#stop").on("click", stopping);

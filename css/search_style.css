@@ -1,0 +1,9 @@
+﻿body {
+    font-family: Consolas, 微軟正黑體;
+}
+
+input {
+    font-family: inherit;
+    text-align: center;
+    vertical-align: middle;
+}
