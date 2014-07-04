@@ -72,11 +72,11 @@ input {
 }
 
 .sdvx_style_svg {
-    -webkit-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
-    -moz-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
-    -ms-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
-    -o-transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
-    transform: translateY(-320px) scale(0.2, 0.35) perspective(360px) rotateX(60deg);
+    -webkit-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
+    -moz-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
+    -ms-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
+    -o-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
+    transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
 }
 
 div.options {

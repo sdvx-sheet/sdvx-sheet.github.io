@@ -453,7 +453,7 @@ var domActions = {
         $("#speed").on("change", userUpdateSpeed);
 
         $("#sdvx_style").on("change", sheetStyleChange);
-    },
+    }
 };
 
 function loadTickSound() {
@@ -483,6 +483,8 @@ function playTickSound() {
 
 $(document).ready(function () {
     window.domActions.initDomEvent();
+
+    initialMusicDBDOM();
 
     $("#play").attr("disabled", "true");
     $("#stop").attr("disabled", "true");
