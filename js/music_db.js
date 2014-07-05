@@ -107,7 +107,7 @@ var music_db = TAFFY([
 // Initial music_db
 function initialMusicDBDOM() {
     for (var level = 1; level <= 16; ++level) {
-        var db_result = music_db({ level: level }).order("title").order("type");
+        var db_result = music_db({ level: level }).order("type asec, title asec");
         if (db_result.count() != 0) {
             $("#music").append("<optgroup label=\"lv" + level + "\"></optgroup>");
             var current_optgroup = $("#music optgroup:last-child");
