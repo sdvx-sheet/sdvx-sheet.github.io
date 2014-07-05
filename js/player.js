@@ -30,12 +30,31 @@ updatingBPM = false;
 tick_context = null;
 tick_snd = null;
 
+var Sheet = {
+    playerHeight: 510,
+    beatSpeed: 8,        // speed = 1, 譜面上有 8 小節
+    cPerBeat: 48,
+    noteHeight: 5,
+    fxHeight: 5,
+    orthogonalHeight: 1/8,
+    checkLineHeight: 5,
+    bpmLineHeight: 5,
+    measureLineHeight: 5,
+    beatLineHeight: 1,
+    lineWidth: 50,
+    backgroundLineWidth: 6
+};
+
+function getHeightByC(c) {
+    return c / Sheet.cPerBeat * speed / Sheet.beatSpeed * Sheet.playerHeight;
+}
+
 function getPosition(c) {
-    return 510 - ((c / 48) * 500 / 4) * speed;
+    return Sheet.playerHeight - getHeightByC(c);
 }
 
 function getTimeByCAndBPM(c, current_bpm) {
-    return (c / 48) * (60 / current_bpm) * 1000;
+    return (c / Sheet.cPerBeat) * (60 / current_bpm) * 1000;
 }
 
 function getTimeByC(c) {
@@ -78,7 +97,7 @@ function getCByTime(time) {
         // 將 c 轉換成時間
         var time_through = getTimeByCAndBPM(c_through, current_bpm);
         if (time_through >= time) {
-            total_c += time * (current_bpm / 60 / 1000) * 48;
+            total_c += time * (current_bpm / 60 / 1000) * Sheet.cPerBeat;
             break;
         } else {
             total_c += c_through;
@@ -94,17 +113,35 @@ function updateBPMUI() {
 }
 
 function getNotePos(note_pos) {
-    return 53 + 50 * note_pos;
+    return Sheet.lineWidth * (note_pos + 1) + (Sheet.backgroundLineWidth / 2);
 }
 
 function getFXPos(note_pos) {
-    return 53 + 100 * note_pos;
+    return Sheet.lineWidth * (note_pos * 2 + 1) + (Sheet.backgroundLineWidth / 2);
+}
+
+function drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end) {
+    return svg.polygon([[x_start, y_start], [x_start, y_end], [x_end, y_end], [x_end, y_start]]);
+}
+
+function addBeatPolygon(svg, y) {
+    var x_start = Sheet.lineWidth;
+    var x_end = Sheet.lineWidth * 5;
+    var y_start = y;
+    var y_end = y - Sheet.beatLineHeight;
+    var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
+    new_svg.setAttribute("class", "sheet_background_line");
+    // new_svg.setAttribute("transform", "translate(0,0)");
 }
 
 function addMeasurePolygon(svg, y) {
-    var new_svg = svg.polygon([[50, y], [50, y - 6], [250, y - 6], [250, y]]);
+    var x_start = Sheet.lineWidth;
+    var x_end = Sheet.lineWidth * 5;
+    var y_start = y;
+    var y_end = y - Sheet.measureLineHeight;
+    var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
     new_svg.setAttribute("class", "sheet_background_line");
-    new_svg.setAttribute("transform", "translate(0,0)");
+    // new_svg.setAttribute("transform", "translate(0,0)");
 }
 
 function addTickSoundByTime(time) {
@@ -112,46 +149,53 @@ function addTickSoundByTime(time) {
 }
 
 function addNote(svg, note_pos, c) {
-    var x_left = getNotePos(note_pos);
-    var y = getPosition(c);
-    var new_svg = svg.polygon([[x_left, y], [x_left, y - 6], [x_left + 44, y - 6], [x_left + 44, y]]);
+    var x_start = getNotePos(note_pos);
+    var x_end = x_start + Sheet.lineWidth - Sheet.backgroundLineWidth;
+    var y_start = getPosition(c);
+    var y_end = y_start - Sheet.noteHeight;
+    var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
     new_svg.setAttribute("class", "note");
     var time = getTimeByC(c);
     addTickSoundByTime(time);
 }
 
 function addNoteLong(svg, note_pos, c_start, c_end) {
-    var x_left = getNotePos(note_pos);
+    var x_start = getNotePos(note_pos);
+    var x_end = x_start + Sheet.lineWidth - Sheet.backgroundLineWidth;
     var y_start = getPosition(c_start);
     var y_end = getPosition(c_end);
-    var new_svg = svg.polygon([[x_left, y_start], [x_left, y_end], [x_left + 44, y_end], [x_left + 44, y_start]]);
+    var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
     new_svg.setAttribute("class", "note_long");
     var time = getTimeByC(c_start);
     addTickSoundByTime(time);
 }
 
 function addFX(svg, note_pos, c) {
-    var x_left = getFXPos(note_pos);
-    var y = getPosition(c);
-    var new_svg = svg.polygon([[x_left, y], [x_left, y - 6], [x_left + 94, y - 6], [x_left + 94, y]]);
+    var x_start = getFXPos(note_pos);
+    var x_end = x_start + Sheet.lineWidth * 2 - Sheet.backgroundLineWidth;
+    var y_start = getPosition(c);
+    var y_end = y_start - Sheet.fxHeight;
+    var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
     new_svg.setAttribute("class", "fx");
     var time = getTimeByC(c);
     addTickSoundByTime(time);
 }
 
 function addFXLong(svg, note_pos, c_start, c_end) {
-    var x_left = getFXPos(note_pos);
+    var x_start = getFXPos(note_pos);
+    var x_end = x_start + Sheet.lineWidth * 2 - Sheet.backgroundLineWidth;
     var y_start = getPosition(c_start);
     var y_end = getPosition(c_end);
-    var new_svg = svg.polygon([[x_left, y_start], [x_left, y_end], [x_left + 94, y_end], [x_left + 94, y_start]]);
+    var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
     new_svg.setAttribute("class", "fx_long");
     var time = getTimeByC(c_start);
     addTickSoundByTime(time);
 }
 
 function addOrthogonal(svg, note_pos, x_start, x_end, c) {
-    var y = getPosition(c);
-    var new_svg = svg.polygon([[x_start, y], [x_start, y - 15], [x_end + 50, y - 15], [x_end + 50, y]]);
+    var y_start = getPosition(c);
+    var y_end = y_start - getHeightByC(48) * Sheet.orthogonalHeight;
+    var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end + Sheet.lineWidth, y_end);
     if (note_pos == 0)
         new_svg.setAttribute("class", "analog_blue");
     else
@@ -161,7 +205,7 @@ function addOrthogonal(svg, note_pos, x_start, x_end, c) {
 function addPath(svg, note_pos, x_start, x_end, c_start, c_end) {
     var y_start = getPosition(c_start);
     var y_end = getPosition(c_end);
-    var new_svg = svg.polygon([[x_start, y_start], [x_start + 50, y_start], [x_end + 50, y_end], [x_end, y_end]]);
+    var new_svg = svg.polygon([[x_start, y_start], [x_start + Sheet.lineWidth, y_start], [x_end + Sheet.lineWidth, y_end], [x_end, y_end]]);
     if (note_pos == 0)
         new_svg.setAttribute("class", "analog_blue moving");
     else
@@ -170,7 +214,10 @@ function addPath(svg, note_pos, x_start, x_end, c_start, c_end) {
 
 function addAllMeasurePolygon(svg, total_beats) {
     for (var i = 0; i <= total_beats; ++i) {
-        addMeasurePolygon(svg, getPosition(48 * i));
+        if (i % 4 == 0)
+            addMeasurePolygon(svg, getPosition(Sheet.cPerBeat * i));
+        else
+            addBeatPolygon(svg, getPosition(Sheet.cPerBeat * i));
     }
 }
 
@@ -188,12 +235,13 @@ function updateSheetByTime(g_sheet_element, time) {
 
 function addBPM(svg, bpm, c) {
     if (bpm_list.length != 0) {
-        var y = getPosition(c);
+        var y_start = getPosition(c);
+        var y_end = y_start - Sheet.bpmLineHeight;
         var new_group = svg.group(null);
         $(new_group).svg();
         var new_group_svg = $(new_group).svg('get');
-        var new_polygon = new_group_svg.polygon([[0, y], [0, y - 6], [300, y - 6], [300, y]]);
-        var new_text = new_group_svg.text(null, 300, y, bpm.toString());
+        var new_polygon = drawPolygonBy2Points(new_group_svg, 0, y_start, Sheet.lineWidth * 6, y_end);
+        var new_text = new_group_svg.text(null, Sheet.lineWidth * 6, y_start, bpm.toString());
         $(new_text).addClass("bpm_text");
     }
     appendBPMList(c, bpm);
@@ -239,7 +287,7 @@ function updateBPM(new_bpm, i) {
 function appendTimeline(c, current_bpm, i) {
     var time = getTimeByCAndBPM(c, current_bpm) / 1000;
     window.sheet_timeline.to($("#g_sheet"), time / music_speed, {
-        y: "+=" + (time / 60 * current_bpm * speed * 125).toString(), ease: Linear.easeNone, onStart: function () {
+        y: "+=" + (time / 60 * current_bpm * speed * (Sheet.playerHeight / Sheet.beatSpeed)).toString(), ease: Linear.easeNone, onStart: function () {
             if (updatingBPM == false) {
                 updatingBPM = true;
                 updateBPM(current_bpm, i);
