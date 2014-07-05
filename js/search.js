@@ -1,5 +1,6 @@
 ﻿function ret_val(value) {
     $("#music", window.opener.document).val(value);
+    window.opener.select_song();
     window.close();
 }
 
