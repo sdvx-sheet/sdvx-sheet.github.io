@@ -100,6 +100,29 @@ var music_db = TAFFY([
     { value: "koisuruuchuusensoutsuabababamikkusu_i", title: "恋する☆宇宙戦争っ！！ あばばばみっくす", type: 4, level: 14 },
     { value: "tsukinimurakumohananikaze_i", title: "月に叢雲華に風", type: 4, level: 14 },
     { value: "rintoshitesakuhananogotokusupu_kyiterumyinmikkusu_i", title: "凛として咲く花の如く スプーキィテルミィンミックス", type: 4, level: 14 },
+    { value: "albida_powerless_mix_e", title: "ALBIDA Powerless Mix", type: 3, level: 14 },
+    { value: "blue_rain_dustboxxxx_rmx_e", title: "Blue Rain Dustboxxxx RMX", type: 3, level: 14 },
+    { value: "broken_8cmix_e", title: "Broken 8cmix", type: 3, level: 14 },
+    { value: "disagree_feelings_e", title: "Disagree Feelings", type: 3, level: 14 },
+    { value: "distorted_floor_e", title: "Distorted Floor", type: 3, level: 14 },
+    { value: "dreamin_feat_ryu_e", title: "dreamin' feat.Ryu☆", type: 3, level: 14 },
+    { value: "earthquake_super_shock_sdvx_edit_e", title: "Earthquake Super Shock - SDVX Edit. -", type: 3, level: 14 },
+    { value: "evans_voltex_pf_arrange_e", title: "Evans VolteX Pf arrange", type: 3, level: 14 },
+    { value: "freaky_freak_e", title: "freaky freak", type: 3, level: 14 },
+    { value: "freeway_shuffle_more2_happy_remix_e", title: "Freeway Shuffle -More2 HAPPY Re-Mix-", type: 3, level: 14 },
+    { value: "grip_break_down_sdvx_edit_e", title: "Grip & Break down !! - SDVX Edit. -", type: 3, level: 14 },
+    { value: "ignited_night_burst_e", title: "Ignited Night burst", type: 3, level: 14 },
+    { value: "mandara_e", title: "MANDARA", type: 3, level: 14 },
+    { value: "neu_bsp_style_e", title: "neu BSP style", type: 3, level: 14 },
+    { value: "rainbow_flyer_gratitude_remix_e", title: "rainbow flyer -gratitude remix-", type: 3, level: 14 },
+    { value: "red_zone_neoclassical_party_remix_e", title: "RED ZONE NeoClassical Party Remix", type: 3, level: 14 },
+    { value: "strawberry_crisis_e", title: "Strawberry Crisis", type: 3, level: 14 },
+    { value: "taboo_tears_you_up_2008_e", title: "taboo tears you up 2008", type: 3, level: 14 },
+    { value: "tomorrow_perfume_cshow_remix_e", title: "Tomorrow Perfume (C-Show Remix)", type: 3, level: 14 },
+    { value: "trigger_happy_e", title: "TRIGGER★HAPPY", type: 3, level: 14 },
+    { value: "tycoon_e", title: "TYCOON", type: 3, level: 14 },
+    { value: "wheel_e", title: "Wheel", type: 3, level: 14 },
+    { value: "xepher_light_and_darkness_dragon_remix_e", title: "Xepher Light and Darkness Dragon REMIX", type: 3, level: 14 },
     { value: "black_or_white_e", title: "BLACK or WHITE?", type: 3, level: 15 },
     { value: "hyena_e", title: "HYENA", type: 3, level: 15 }
 ]);
@@ -108,6 +131,7 @@ var music_db = TAFFY([
 function initialMusicDBDOM() {
     for (var level = 1; level <= 16; ++level) {
         var db_result = music_db({ level: level }).order("type asec, title asec");
+        // var db_result = music_db({ level: level });
         if (db_result.count() != 0) {
             $("#music").append("<optgroup label=\"lv" + level + "\"></optgroup>");
             var current_optgroup = $("#music optgroup:last-child");

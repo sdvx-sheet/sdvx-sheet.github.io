@@ -52,6 +52,7 @@ input {
 .analog_red {
     fill: #ff20c0;
     opacity: 0.7;
+    background-blend-mode: multiply;
 }
 
 .invisible {
@@ -96,4 +97,29 @@ div.options {
 
 .fc2_function {
 	text-align: center;
+}
+
+.check_text {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: Consolas;
+    opacity: 0.7;
+}
+
+.check_text_early {
+    fill: blue;
+}
+
+.check_text_late {
+    fill: red;
+}
+
+.note_ghost {
+    fill: yellow;
+    opacity: 0.4;
+}
+
+.fx_ghost {
+    fill: blue;
+    opacity: 0.4;
 }
