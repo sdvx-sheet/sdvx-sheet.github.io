@@ -492,6 +492,69 @@ function searching(e) {
     window.open("search.html", "SDVX 譜面搜尋", "toolbar=0, width=800, height=600");
 }
 
+function localLoading(event) {
+    // disable wheel action
+    $(window).off();
+    // disable keyup action
+    $(document).off();
+
+    // set play unclickable
+    $("#play").attr("disabled", "true");
+
+    // get speed / currentTime from form
+    speed = +$("#speed").val();
+    currentTime = +$("#time").val();
+    music_speed = +$("#music_speed").val();
+
+    window.sheet_timeline = new TimelineLite({ paused: true });
+    TweenLite.to($("#g_sheet"), 0, { y: 0, ease: Linear.easeNone });
+
+    // initial svgs and reset global variables
+    var svg_measure = $("#g_sheet_measure").svg('get');
+    var svg_short = $("#g_sheet_short").svg('get');
+    var svg_analog = $("#g_sheet_analog").svg('get');
+    var svg_long = $("#g_sheet_long").svg('get');
+    var svg_bpm = $("#g_bpm").svg('get');
+    $("#g_sheet_measure").html("");
+    $("#g_sheet_short").html("");
+    $("#g_sheet_analog").html("");
+    $("#g_sheet_long").html("");
+    $("#g_bpm").html("");
+    bpm_list = [];
+
+    // load music
+    var music_reader = new FileReader();
+    music_reader.onload = function (e) {
+        var array_buffer = e.target.result;
+        window.context.decodeAudioData(array_buffer, function(buffer) {
+            window.snd = buffer;
+            window.startOffset = window.currentTime / window.music_speed;
+            $("#play").removeAttr("disabled");
+            $(window).one(mousewheelevt, mousewheelAction);
+            $("#time_bar").attr("max", window.snd.duration);
+            $("#time_bar").on("input", dragTimeBar);
+            $("#time_bar").on("change", releaseTimeBar);
+            $("#music_vol_bar").on("input", dragMusicVolBar);
+            $(document).on('keyup', on_key_up);
+        }, function() {});
+    };
+    music_reader.readAsArrayBuffer($("#local_file_sound")[0].files[0]);
+
+    // load sheet
+    var sheet_reader = new FileReader();
+    sheet_reader.onload = function (e) {
+        var ksh_data = e.target.result;
+        var data = parseKsh(ksh_data);
+        eval(data);
+        window.sheet_string = data;
+        $("#speed").removeAttr("disabled");
+        $("#bpm_times_speed").removeAttr("disabled");
+        updateSheetByTime($("#g_sheet")[0], currentTime * 1000);
+    };
+    sheet_reader.readAsText($("#local_file_ksh")[0].files[0]);
+}
+
+
 var domActions = {
     initDomEvent: function (e) {
         $("#search").on("click", searching);
@@ -506,6 +569,8 @@ var domActions = {
         $("#speed").on("change", userUpdateSpeed);
 
         $("#sdvx_style").on("change", sheetStyleChange);
+
+        $("#load_local").on("click", localLoading);
     }
 };
 

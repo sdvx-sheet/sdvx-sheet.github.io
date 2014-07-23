@@ -9,6 +9,7 @@
     <script src="js/TweenMax.min.js"></script>
     <script src="js/TimelineMax.min.js"></script>
     <script src="js/purl.js"></script>
+    <script src="js/parse_ksh.js"></script>
     <script src="js/player.js"></script>
     <script src="js/taffy-min.js"></script>
     <script src="js/music_db.js"></script>
@@ -26,6 +27,12 @@
         <input type="button" id="stop" value="Stop" />
         <input type="button" id="copy" value="Copy" />
         <!-- <input type="file" accept="audio/*" id="tick_sound_file" /> -->
+        
+        <br />
+        <input type="file" accept=".ksh" id="local_file_ksh" />
+        <input type="file" accept="audio/*" id="local_file_sound" />
+        <input type="button" id="load_local" value="Load Local" />
+
         <br />
         BPM: <input type="text" id="bpm" value="0" size="5" disabled />
         Speed: <input type="text" id="speed" value="1.0" size="3" disabled />
