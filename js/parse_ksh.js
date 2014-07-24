@@ -255,11 +255,11 @@ function parseMusicBody(music_body_split_dash) {
                 if (pre_command == "beat") {
                     if (!(measure == 1 && beat == 1 && subbeat == 0)) {
                         slash_pos = current_line.indexOf("/", equal_pos + 1);
-                        addNewBeat(parseInt(current_line.substr(equal_pos + 1, slash_pos, 10),
+                        addNewBeat(parseInt(current_line.substr(equal_pos + 1, slash_pos), 10),
                             parseInt(current_line.substr(slash_pos + 1)),
                             measure,
                             beat,
-                            subbeat));
+                            subbeat);
                     }
                 } else if (pre_command == "t") {
                     var new_bpm = current_line.substr(equal_pos + 1);
