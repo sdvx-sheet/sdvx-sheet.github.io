@@ -266,7 +266,7 @@ function parseMusicBody(music_body_split_dash) {
                     if (measure == 1 && beat == 1 && subbeat == 0) {
                         clearBpm();
                     }
-                    addNewBpm(parseInt(new_bpm, 10),
+                    addNewBpm(parseFloat(new_bpm),
                         measure,
                         beat,
                         subbeat);
