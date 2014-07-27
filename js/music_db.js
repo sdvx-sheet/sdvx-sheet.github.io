@@ -150,7 +150,9 @@ var music_db = TAFFY([
     { value: "totsugekigarasunoni_sohimedwattnudenparmx_e", title: "突撃!ガラスのニーソ姫! D.watt nu-denpa RMX", type: 3, level: 14 },
     { value: "zuttosobaniisaseteyone_e", title: "ずっとそばにいさせてよね！", type: 3, level: 14 },
     { value: "black_or_white_e", title: "BLACK or WHITE?", type: 3, level: 15 },
-    { value: "hyena_e", title: "HYENA", type: 3, level: 15 }
+    { value: "hyena_e", title: "HYENA", type: 3, level: 15 },
+    { value: "cleopatrysm_pylamid_e", title: "Cleopatrysm", type: 3, level: 14 },
+    { value: "cleopatrysm_pylamid_i", title: "Cleopatrysm", type: 4, level: 15 }
 ]);
 
 // Initial music_db
