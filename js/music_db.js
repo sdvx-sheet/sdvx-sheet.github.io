@@ -155,14 +155,52 @@ var music_db = TAFFY([
     { value: "cleopatrysm_pylamid_i", title: "Cleopatrysm", type: 4, level: 15 }
 ]);
 
+var music_test_db = TAFFY([
+    { value: "aa_e", title: "AA BlackY mix", type: 3, level: 15 },
+    { value: "absurd_gaff_e", title: "Absurd Gaff", type: 3, level: 15 },
+    { value: "croix_e", title: "croiX", type: 3, level: 15 },
+    { value: "dynasty_e", title: "Dynasty", type: 3, level: 15 },
+    { value: "flower_e", title: "FLOWER REDALiCE Remix", type: 3, level: 15 },
+    { value: "ganymede_e", title: "Ganymede kamome mix", type: 3, level: 15 },
+    { value: "gott_e", title: "Gott", type: 3, level: 15 },
+    { value: "max_burning_e", title: "Max Burning!!", type: 3, level: 15 },
+    { value: "onigo_e", title: "Onigo", type: 3, level: 15 },
+    { value: "panic_holic_e", title: "PANIC HOLIC", type: 3, level: 15 },
+    { value: "the_world_of_sound_e", title: "The world of sound", type: 3, level: 15 },
+    { value: "vip_e", title: "V.I.P.", type: 3, level: 15 },
+    { value: "kanashibarinoaiwo_e", title: "金縛りの逢を", type: 3, level: 15 },
+    { value: "daiuchuustage_e", title: "大宇宙ステージ", type: 3, level: 15 },
+    { value: "hongkongkungfudaisenpu_e", title: "香港功夫大旋風", type: 3, level: 15 },
+    { value: "mei_e", title: "冥 Rockin' SWING REMIX", type: 3, level: 15 },
+    { value: "aa_i", title: "AA BlackY mix", type: 4, level: 15 },
+    { value: "albida_powerless_mix_i", title: "ALBIDA Powerless Mix", type: 4, level: 15 },
+    { value: "cleopatrysm_i", title: "Cleopatrysm", type: 4, level: 15 },
+    { value: "distorted_floor_i", title: "Distorted Floor", type: 4, level: 15 },
+    { value: "flower_i", title: "FLOWER REDALiCE Remix", type: 4, level: 15 },
+    { value: "ganymede_i", title: "Ganymede kamome mix", type: 4, level: 15 },
+    { value: "good_high_school_i", title: "good high school", type: 4, level: 15 },
+    { value: "nyan_cat_i", title: "Nyan Cat", type: 4, level: 15 },
+    { value: "tycoon_i", title: "TYCOON", type: 4, level: 15 },
+    { value: "chirunonopa_fekutosansuukyoushitsu_i", title: "チルノのパーフェクトさんすう教室", type: 4, level: 15 },
+    { value: "naito_obu_naitsu_i", title: "ナイト・オブ・ナイツ", type: 4, level: 15 },
+    { value: "amanojaku_i", title: "天ノ弱", type: 4, level: 15 },
+    { value: "osenjumedite_shon_i", title: "御千手メディテーション", type: 4, level: 15 },
+    { value: "kashokuseiaidorushoukougun_i", title: "過食性:アイドル症候群", type: 4, level: 15 },
+    { value: "kanbudetomattesugutokerukyoukinoudongein_i", title: "患部で止まってすぐ溶ける ～ 狂気の優曇華院", type: 4, level: 15 },
+    { value: "geppuumadenryuukotsukisen_i", title: "「月風魔伝」龍骨鬼戦 yks Remix", type: 4, level: 15 },
+    { value: "nishinipporinoodori_i", title: "西日暮里の踊り", type: 4, level: 15 },
+    { value: "mei_i", title: "冥 Rockin' SWING REMIX", type: 4, level: 15 }
+]);
+
 // Initial music_db
 function initialMusicDBDOM() {
+    var current_optgroup;
     for (var level = 1; level <= 16; ++level) {
         var db_result = music_db({ level: level }).order("type asec, title asec");
         // var db_result = music_db({ level: level });
         if (db_result.count() != 0) {
             $("#music").append("<optgroup label=\"lv" + level + "\"></optgroup>");
-            var current_optgroup = $("#music optgroup:last-child");
+            current_optgroup = $("#music optgroup:last-child");
             db_result.each(function (entry) {
                 var type_name = "";
                 if (entry.type == 1)
@@ -176,5 +214,24 @@ function initialMusicDBDOM() {
                 current_optgroup.append("<option value=\"" + entry.value + "\">" + entry.title + "[" + type_name + "]</option>");
             });
         }
+    }
+
+    // Append test songs
+    var db_test_result = music_test_db();
+    if (db_test_result.count() != 0) {
+        $("#music").append("<optgroup label=\"Offset not setting songs.\"></optgroup>");
+        current_optgroup = $("#music optgroup:last-child");
+        db_test_result.each(function (entry) {
+            var type_name = "";
+            if (entry.type == 1)
+                type_name = "NOV";
+            else if (entry.type == 2)
+                type_name = "ADV";
+            else if (entry.type == 3)
+                type_name = "EXH";
+            else if (entry.type == 4)
+                type_name = "INF";
+            current_optgroup.append("<option value=\"" + entry.value + "\">" + entry.title + "[" + type_name + "]</option>");
+        });
     }
 }
