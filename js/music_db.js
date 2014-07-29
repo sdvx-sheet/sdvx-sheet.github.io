@@ -152,7 +152,9 @@ var music_db = TAFFY([
     { value: "black_or_white_e", title: "BLACK or WHITE?", type: 3, level: 15 },
     { value: "hyena_e", title: "HYENA", type: 3, level: 15 },
     { value: "cleopatrysm_pylamid_e", title: "Cleopatrysm", type: 3, level: 14 },
-    { value: "cleopatrysm_pylamid_i", title: "Cleopatrysm", type: 4, level: 15 }
+    { value: "cleopatrysm_pylamid_i", title: "Cleopatrysm", type: 4, level: 15 },
+    { value: "osenjumedite_shon_e", title: "御千手メディテーション", type: 3, level: 14},
+	{ value: "osenjumedite_shon_i", title: "御千手メディテーション", type: 4, level: 15}
 ]);
 
 var music_test_db = TAFFY([
