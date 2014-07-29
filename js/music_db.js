@@ -153,11 +153,8 @@ var music_db = TAFFY([
     { value: "hyena_e", title: "HYENA", type: 3, level: 15 },
     { value: "cleopatrysm_pylamid_e", title: "Cleopatrysm", type: 3, level: 14 },
     { value: "cleopatrysm_pylamid_i", title: "Cleopatrysm", type: 4, level: 15 },
-    { value: "osenjumedite_shon_e", title: "御千手メディテーション", type: 3, level: 14},
-	{ value: "osenjumedite_shon_i", title: "御千手メディテーション", type: 4, level: 15}
-]);
-
-var music_test_db = TAFFY([
+    { value: "osenjumedite_shon_e", title: "御千手メディテーション", type: 3, level: 14 },
+	{ value: "osenjumedite_shon_i", title: "御千手メディテーション", type: 4, level: 15 },
     { value: "aa_e", title: "AA BlackY mix", type: 3, level: 15 },
     { value: "absurd_gaff_e", title: "Absurd Gaff", type: 3, level: 15 },
     { value: "croix_e", title: "croiX", type: 3, level: 15 },
@@ -176,7 +173,6 @@ var music_test_db = TAFFY([
     { value: "mei_e", title: "冥 Rockin' SWING REMIX", type: 3, level: 15 },
     { value: "aa_i", title: "AA BlackY mix", type: 4, level: 15 },
     { value: "albida_powerless_mix_i", title: "ALBIDA Powerless Mix", type: 4, level: 15 },
-    { value: "cleopatrysm_i", title: "Cleopatrysm", type: 4, level: 15 },
     { value: "distorted_floor_i", title: "Distorted Floor", type: 4, level: 15 },
     { value: "flower_i", title: "FLOWER REDALiCE Remix", type: 4, level: 15 },
     { value: "ganymede_i", title: "Ganymede kamome mix", type: 4, level: 15 },
@@ -186,12 +182,14 @@ var music_test_db = TAFFY([
     { value: "chirunonopa_fekutosansuukyoushitsu_i", title: "チルノのパーフェクトさんすう教室", type: 4, level: 15 },
     { value: "naito_obu_naitsu_i", title: "ナイト・オブ・ナイツ", type: 4, level: 15 },
     { value: "amanojaku_i", title: "天ノ弱", type: 4, level: 15 },
-    { value: "osenjumedite_shon_i", title: "御千手メディテーション", type: 4, level: 15 },
     { value: "kashokuseiaidorushoukougun_i", title: "過食性:アイドル症候群", type: 4, level: 15 },
     { value: "kanbudetomattesugutokerukyoukinoudongein_i", title: "患部で止まってすぐ溶ける ～ 狂気の優曇華院", type: 4, level: 15 },
     { value: "geppuumadenryuukotsukisen_i", title: "「月風魔伝」龍骨鬼戦 yks Remix", type: 4, level: 15 },
     { value: "nishinipporinoodori_i", title: "西日暮里の踊り", type: 4, level: 15 },
     { value: "mei_i", title: "冥 Rockin' SWING REMIX", type: 4, level: 15 }
+]);
+
+var music_test_db = TAFFY([
 ]);
 
 // Initial music_db
