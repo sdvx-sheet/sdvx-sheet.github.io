@@ -186,11 +186,8 @@ var music_db = TAFFY([
     { value: "kanbudetomattesugutokerukyoukinoudongein_i", title: "患部で止まってすぐ溶ける ～ 狂気の優曇華院", type: 4, level: 15 },
     { value: "geppuumadenryuukotsukisen_i", title: "「月風魔伝」龍骨鬼戦 yks Remix", type: 4, level: 15 },
     { value: "nishinipporinoodori_i", title: "西日暮里の踊り", type: 4, level: 15 },
-    { value: "mei_i", title: "冥 Rockin' SWING REMIX", type: 4, level: 15 }
-]);
-
-var music_test_db = TAFFY([
-    { value: "babel_next_story_e", title: "BabeL ～Next Story～", type: 3, level: 15 },
+    { value: "mei_i", title: "冥 Rockin' SWING REMIX", type: 4, level: 15 },
+        { value: "babel_next_story_e", title: "BabeL ～Next Story～", type: 3, level: 15 },
     { value: "black_emperor_e", title: "Black Emperor", type: 3, level: 15 },
     { value: "booths_of_fighters_e", title: "Booths of Fighters", type: 3, level: 15 },
     { value: "brain_power_e", title: "Brain Power", type: 3, level: 15 },
@@ -241,7 +238,13 @@ var music_test_db = TAFFY([
     { value: "shinkouhahakanakiningennotameni_arr_demetori_e", title: "信仰は儚き人間の為に ～ Arr.Demetori", type: 3, level: 15 },
     { value: "chouetsushiteshimattakanojotosowoumiotoshitariyuu_e", title: "超越してしまった彼女と其を生み落した理由", type: 3, level: 15 },
     { value: "todoroke_koinobeanball_e", title: "轟け！恋のビーンボール！！", type: 3, level: 15 },
-    { value: "yanaginoshitanodyurahan_hard_chaos_mix_e", title: "柳の下のデュラハン hard chaos mix", type: 3, level: 15 }
+    { value: "yanaginoshitanodyurahan_hard_chaos_mix_e", title: "柳の下のデュラハン hard chaos mix", type: 3, level: 15 },
+    { value: "bangin_burst_e", title: "Bangin' Burst", type: 3, level: 16 },
+    { value: "for_ultraplayers_e", title: "For UltraPlayers", type: 3, level: 16 }
+]);
+
+var music_test_db = TAFFY([
+
 ]);
 
 // Initial music_db
