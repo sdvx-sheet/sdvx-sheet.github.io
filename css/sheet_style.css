@@ -80,8 +80,22 @@ input {
     transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
 }
 
+div.option_wrapper {
+    display: table;
+    width: 90%;
+    height: 400px;
+    position: absolute;
+}
+
 div.options {
+    text-align: right;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+div.headers {
     text-align: center;
+    position: inherit;
 }
 
 .bpm_text {

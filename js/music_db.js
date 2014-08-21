@@ -250,6 +250,8 @@ var music_test_db = TAFFY([
 // Initial music_db
 function initialMusicDBDOM() {
     var current_optgroup;
+    current_optgroup = $("#music");
+    current_optgroup.append("<option value=\"\">Now Playing</option>");
     for (var level = 1; level <= 16; ++level) {
         var db_result = music_db({ level: level }).order("type asec, title asec");
         // var db_result = music_db({ level: level });
