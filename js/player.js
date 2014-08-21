@@ -264,6 +264,7 @@ function source_onended() {
         $("#load").removeAttr("disabled");
         $("#bpm_times_speed").removeAttr("disabled");
         $("#speed").removeAttr("disabled");
+        $("#music_speed").removeAttr("disabled");
     }
 }
 
@@ -363,6 +364,11 @@ function loading(event) {
             $("#time_bar").on("change", releaseTimeBar);
             $("#music_vol_bar").on("input", dragMusicVolBar);
             $(document).on('keyup', on_key_up);
+            $("#music_speed").removeAttr("disabled");
+            $("#speed").removeAttr("disabled");
+            $("#bpm_times_speed").removeAttr("disabled");
+            $("#music_speed").off();
+            $("#music_speed").on("change", changeMusicSpeed);
         }, function () { });
     };
     window.request.send();
@@ -373,8 +379,6 @@ function loading(event) {
         success: function (data) {
             // initialSheetTimeline();
             window.sheet_string = data;
-            $("#speed").removeAttr("disabled");
-            $("#bpm_times_speed").removeAttr("disabled");
             updateSheetByTime($("#g_sheet")[0], currentTime * 1000);
         },
         async: true
@@ -429,6 +433,7 @@ function select_song(event) {
     // $("#load").removeAttr("disabled");
     $("#bpm_times_speed").attr("disabled", "true");
     $("#speed").attr("disabled", "true");
+    $("#music_speed").attr("disabled", "true");
     $("#time").val("0");
     $("#time_bar").val("0.0");
 
@@ -495,6 +500,10 @@ function searching(e) {
     window.open("search.html", "SDVX 譜面搜尋", "toolbar=0, width=800, height=600");
 }
 
+function changeMusicSpeed(e) {
+    loading();
+}
+
 function localLoading(event) {
     // disable wheel action
     $(window).off();
@@ -529,7 +538,7 @@ function localLoading(event) {
     var music_reader = new FileReader();
     music_reader.onload = function (e) {
         var array_buffer = e.target.result;
-        window.context.decodeAudioData(array_buffer, function(buffer) {
+        window.context.decodeAudioData(array_buffer, function (buffer) {
             window.snd = buffer;
             window.startOffset = window.currentTime / window.music_speed;
             $("#play").removeAttr("disabled");
@@ -538,6 +547,8 @@ function localLoading(event) {
             $("#time_bar").on("input", dragTimeBar);
             $("#time_bar").on("change", releaseTimeBar);
             $("#music_vol_bar").on("input", dragMusicVolBar);
+            $("#music_speed").off();
+            $("#music_speed").on("change", changeMusicSpeed);
             $(document).on('keyup', on_key_up);
         }, function() {});
     };
@@ -708,6 +719,7 @@ function stopping(event) {
     $("#load").removeAttr("disabled");
     $("#bpm_times_speed").removeAttr("disabled");
     $("#speed").removeAttr("disabled");
+    $("#music_speed").removeAttr("disabled");
 
     $("#time").val(((window.startOffset * music_speed) % snd.duration).toFixed(4));
 }
@@ -753,6 +765,7 @@ function playing(event) {
     $("#load").attr("disabled", "true");
     $("#bpm_times_speed").attr("disabled", "true");
     $("#speed").attr("disabled", "true");
+    $("#music_speed").attr("disabled", "true");
     // $("#stop").removeAttr("disabled");
 
     if (window.update_time_timer != null)
