@@ -362,6 +362,7 @@ function loading(event) {
             $("#time_bar").attr("max", window.snd.duration);
             $("#time_bar").on("input", dragTimeBar);
             $("#time_bar").on("change", releaseTimeBar);
+            $("#time_bar").val($("#time").val());
             $("#music_vol_bar").on("input", dragMusicVolBar);
             $(document).on('keyup', on_key_up);
             $("#music_speed").removeAttr("disabled");
@@ -663,7 +664,6 @@ $(document).ready(function () {
     var url_time = $.url().param("time");
     if (url_time != undefined) {
         $("#time").val(url_time);
-        $("#time_bar").val(url_time);
     }
     var url_song = $.url().param("music");
     if (url_song != undefined) {
