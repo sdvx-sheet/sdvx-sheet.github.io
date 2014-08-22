@@ -634,7 +634,25 @@ $(document).ready(function () {
     svg_short = $("#g_sheet_short").svg('get');
     svg_analog = $("#g_sheet_analog").svg('get');
     svg_long = $("#g_sheet_long").svg('get');
-    svg_bpm = $("#g_bpm").svg('get');
+    svg_bpm = $("#g_bpm").svg('get');   
+
+    // Web Audio API
+    var audio_context = window.AudioContext || window.webkitAudioContext;
+    window.context = new audio_context();
+    window.tick_context = new audio_context();
+
+    loadTickSound();
+
+    TweenLite.lagSmoothing(0);
+    // TweenLite.ticker.useRAF(false);
+
+    $("#tick_sound_file").on("change", function(e) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            initTickSound(e.target.result);
+        };
+        reader.readAsArrayBuffer(e.target.files[0]);
+    });
 
     // load data from url
     var url_has_song = false;
@@ -658,31 +676,12 @@ $(document).ready(function () {
     }
     var url_sdvx_style = $.url().param("sdvx_style");
     if (url_sdvx_style != undefined) {
-        if (url_sdvx_style == "true")
+        if (url_sdvx_style == "true") {
             $("#sdvx_style").prop("checked", true);
-        else
+            sheetStyleChange();
+        } else
             $("#sdvx_style").prop("checked", false);
     }
-        
-
-    // Web Audio API
-    var audio_context = window.AudioContext || window.webkitAudioContext;
-    window.context = new audio_context();
-    window.tick_context = new audio_context();
-
-    loadTickSound();
-
-    TweenLite.lagSmoothing(0);
-    // TweenLite.ticker.useRAF(false);
-
-    $("#tick_sound_file").on("change", function(e) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            initTickSound(e.target.result);
-        };
-        reader.readAsArrayBuffer(e.target.files[0]);
-    });
-
     if (url_has_song) {
         loading();
     }
