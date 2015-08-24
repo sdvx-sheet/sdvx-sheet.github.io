@@ -196,6 +196,8 @@ function addOrthogonal(svg, note_pos, x_start, x_end, c) {
     var y_start = getPosition(c);
     var y_end = y_start - getHeightByC(48) * Sheet.orthogonalHeight;
     var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end + Sheet.lineWidth, y_end);
+    window.svg_analog_stroke.line(x_start, y_start, x_end + Sheet.lineWidth, y_start, { stroke: 'white', strokeWidth: 1 });
+    window.svg_analog_stroke.line(x_start, y_end, x_end + Sheet.lineWidth, y_end, { stroke: 'white', strokeWidth: 1 });
     if (note_pos == 0) {
         var clip_path = window.svg_analog_mask.getElementById("analog_clip_path");
         if (clip_path == null) {
