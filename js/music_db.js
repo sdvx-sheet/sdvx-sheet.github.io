@@ -327,7 +327,9 @@ var music_test_db = TAFFY([
     { value: "gott_i", title: "Gott", type: 4, level: 15 },
     { value: "max_burning_i", title: "Max Burning!!", type: 4, level: 16 },
     { value: "in_the_breeze_e", title: "In The Breeze", type: 3, level: 14 },
-    { value: "havox_e", title: "Havox", type: 3, level: 15 }
+    { value: "havox_e", title: "Havox", type: 3, level: 15 },
+    { value: "everlasting_message_e", title: "Everlasting Message", type: 3, level: 15 },
+    { value: "everlasting_message_g", title: "Everlasting Message", type: 5, level: 16 }
 ]);
 
 // Initial music_db
@@ -351,6 +353,8 @@ function initialMusicDBDOM() {
                     type_name = "EXH";
                 else if (entry.type == 4)
                     type_name = "INF";
+                else if (entry.type == 5)
+                    type_name = "GRV";
                 current_optgroup.append("<option value=\"" + entry.value + "\">" + entry.title + "[" + type_name + "]</option>");
             });
         }
@@ -371,6 +375,8 @@ function initialMusicDBDOM() {
                 type_name = "EXH";
             else if (entry.type == 4)
                 type_name = "INF";
+            else if (entry.type == 5)
+                type_name = "GRV";
             current_optgroup.append("<option value=\"" + entry.value + "\">" + entry.title + "[" + type_name + "]</option>");
         });
     }

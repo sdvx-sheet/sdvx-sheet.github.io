@@ -45,14 +45,18 @@ input {
 }
 
 .analog_blue {
-    fill: #80a0ff;
-    opacity: 0.7;
+    fill: #13d0ff;
+    opacity: 0.8;
 }
 
 .analog_red {
-    fill: #ff20c0;
-    opacity: 0.7;
-    background-blend-mode: multiply;
+    fill: #C72898;
+    opacity: 0.8;
+}
+
+.analog_mask {
+    fill: white;
+    opacity: 0.5;
 }
 
 .invisible {
@@ -73,11 +77,11 @@ input {
 }
 
 .sdvx_style_svg {
-    -webkit-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
-    -moz-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
-    -ms-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
-    -o-transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
-    transform: translateY(-160px) scale(0.4, 0.4) perspective(400px) rotateX(60deg);
+    -webkit-transform: translateY(-160px) scale(0.6, 0.4) perspective(400px) rotateX(60deg);
+    -moz-transform: translateY(-160px) scale(0.6, 0.4) perspective(400px) rotateX(60deg);
+    -ms-transform: translateY(-160px) scale(0.6, 0.4) perspective(400px) rotateX(60deg);
+    -o-transform: translateY(-160px) scale(0.6, 0.4) perspective(400px) rotateX(60deg);
+    transform: translateY(-160px) scale(0.6, 0.4) perspective(400px) rotateX(60deg);
 }
 
 div.option_wrapper {

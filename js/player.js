@@ -42,7 +42,7 @@ var Sheet = {
     measureLineHeight: 5,
     beatLineHeight: 1,
     lineWidth: 50,
-    backgroundLineWidth: 6
+    backgroundLineWidth: 4
 };
 
 function getHeightByC(c) {
@@ -149,8 +149,8 @@ function addTickSoundByTime(time) {
 }
 
 function addNote(svg, note_pos, c) {
-    var x_start = getNotePos(note_pos);
-    var x_end = x_start + Sheet.lineWidth - Sheet.backgroundLineWidth;
+    var x_start = getNotePos(note_pos) + 3;
+    var x_end = x_start + Sheet.lineWidth - Sheet.backgroundLineWidth - 6;
     var y_start = getPosition(c);
     var y_end = y_start - Sheet.noteHeight;
     var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
@@ -160,8 +160,8 @@ function addNote(svg, note_pos, c) {
 }
 
 function addNoteLong(svg, note_pos, c_start, c_end) {
-    var x_start = getNotePos(note_pos);
-    var x_end = x_start + Sheet.lineWidth - Sheet.backgroundLineWidth;
+    var x_start = getNotePos(note_pos) + 3;
+    var x_end = x_start + Sheet.lineWidth - Sheet.backgroundLineWidth - 6;
     var y_start = getPosition(c_start);
     var y_end = getPosition(c_end);
     var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end, y_end);
@@ -196,10 +196,20 @@ function addOrthogonal(svg, note_pos, x_start, x_end, c) {
     var y_start = getPosition(c);
     var y_end = y_start - getHeightByC(48) * Sheet.orthogonalHeight;
     var new_svg = drawPolygonBy2Points(svg, x_start, y_start, x_end + Sheet.lineWidth, y_end);
-    if (note_pos == 0)
+    if (note_pos == 0) {
+        var clip_path = window.svg_analog_mask.getElementById("analog_clip_path");
+        if (clip_path == null) {
+            var defs = window.svg_analog_mask.defs("mask_defs");
+            clip_path = window.svg_analog_mask.clipPath(defs, 'analog_clip_path');
+        }
+        window.svg_analog_mask.polygon(clip_path, [[x_start, y_start], [x_start, y_end], [x_end + Sheet.lineWidth, y_end], [x_end + Sheet.lineWidth, y_start]]);
+
         new_svg.setAttribute("class", "analog_blue");
-    else
+    } else {
+        window.svg_analog_mask.polygon([[x_start, y_start], [x_start, y_end], [x_end + Sheet.lineWidth, y_end], [x_end + Sheet.lineWidth, y_start]], { clipPath: 'url(#analog_clip_path)', fill: 'white'});
+
         new_svg.setAttribute("class", "analog_red");
+    }
 }
 
 function addPath(svg, note_pos, x_start, x_end, c_start, c_end) {
@@ -208,10 +218,20 @@ function addPath(svg, note_pos, x_start, x_end, c_start, c_end) {
     var new_svg = svg.polygon([[x_start, y_start], [x_start + Sheet.lineWidth, y_start], [x_end + Sheet.lineWidth, y_end], [x_end, y_end]]);
     window.svg_analog_stroke.line(x_start, y_start, x_end, y_end, { stroke: 'white', strokeWidth: 2 });
     window.svg_analog_stroke.line(x_start + Sheet.lineWidth, y_start, x_end + Sheet.lineWidth, y_end, { stroke: 'white', strokeWidth: 2 });
-    if (note_pos == 0)
+    if (note_pos == 0) {
+        var clip_path = window.svg_analog_mask.getElementById("analog_clip_path");
+        if (clip_path == null) {
+            var defs = window.svg_analog_mask.defs("mask_defs");
+            clip_path = window.svg_analog_mask.clipPath(defs, 'analog_clip_path');
+        }
+        window.svg_analog_mask.polygon(clip_path, [[x_start, y_start], [x_start + Sheet.lineWidth, y_start], [x_end + Sheet.lineWidth, y_end], [x_end, y_end]]);
+
         new_svg.setAttribute("class", "analog_blue moving");
-    else
+    } else {
+        window.svg_analog_mask.polygon([[x_start, y_start], [x_start + Sheet.lineWidth, y_start], [x_end + Sheet.lineWidth, y_end], [x_end, y_end]], { clipPath: 'url(#analog_clip_path)' });
+
         new_svg.setAttribute("class", "analog_red moving");
+    }
 }
 
 function addAllMeasurePolygon(svg, total_beats) {
@@ -336,12 +356,14 @@ function loading(event) {
     var svg_short = $("#g_sheet_short").svg('get');
     var svg_analog = $("#g_sheet_analog").svg('get');
     window.svg_analog_stroke = $("#g_sheet_analog_stroke").svg('get');
+    window.svg_analog_mask = $("#g_sheet_analog_mask").svg('get');
     var svg_long = $("#g_sheet_long").svg('get');
     var svg_bpm = $("#g_bpm").svg('get');
     $("#g_sheet_measure").html("");
     $("#g_sheet_short").html("");
     $("#g_sheet_analog").html("");
     $("#g_sheet_analog_stroke").html("");
+    $("#g_sheet_analog_mask").html("");
     $("#g_sheet_long").html("");
     $("#g_bpm").html("");
     bpm_list = [];
@@ -472,6 +494,7 @@ function reloadSheet() {
     $("#g_sheet_short").html("");
     $("#g_sheet_analog").html("");
     $("#g_sheet_analog_stroke").html("");
+    $("#g_sheet_analog_mask").html("");
     $("#g_sheet_long").html("");
     $("#g_bpm").html("");
     window.bpm_list = [];
@@ -532,12 +555,14 @@ function localLoading(event) {
     var svg_short = $("#g_sheet_short").svg('get');
     var svg_analog = $("#g_sheet_analog").svg('get');
     window.svg_analog_stroke = $("#g_sheet_analog_stroke").svg('get');
+    window.svg_analog_mask = $("#g_sheet_analog_mask").svg('get');
     var svg_long = $("#g_sheet_long").svg('get');
     var svg_bpm = $("#g_bpm").svg('get');
     $("#g_sheet_measure").html("");
     $("#g_sheet_short").html("");
     $("#g_sheet_analog").html("");
     $("#g_sheet_analog_stroke").html("");
+    $("#g_sheet_analog_mask").html("");
     $("#g_sheet_long").html("");
     $("#g_bpm").html("");
     bpm_list = [];
@@ -637,12 +662,14 @@ $(document).ready(function () {
     $("#g_sheet_long").svg();
     $("#g_sheet_analog").svg();
     $("#g_sheet_analog_stroke").svg();
+    $("#g_sheet_analog_mask").svg();
     $("#g_sheet_short").svg();
 
     svg_measure = $("#g_sheet_measure").svg('get');
     svg_short = $("#g_sheet_short").svg('get');
     svg_analog = $("#g_sheet_analog").svg('get');
     window.svg_analog_stroke = $("#g_sheet_analog_stroke").svg('get');
+    window.svg_analog_mask = $("#g_sheet_analog_mask").svg('get');
     svg_long = $("#g_sheet_long").svg('get');
     svg_bpm = $("#g_bpm").svg('get');   
 
