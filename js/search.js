@@ -1,5 +1,6 @@
-﻿function ret_val(value) {
+﻿function ret_val(value, offset) {
     $("#music", window.opener.document).val(value);
+    $("#shift", window.opener.document).val(offset);
     window.opener.select_song();
     window.close();
 }
@@ -26,7 +27,7 @@ function search(e) {
         else if (entry.type == 5)
             type_str = "GRV";
 
-        result_html += "<a href='javascript:ret_val(\"" + entry.value + "\");'>(" + entry.level + ") " + entry.title + " [" + type_str + "]</a><br/>";
+        result_html += "<a href='javascript:ret_val(\"" + entry.value + "\", " + entry.offset + ");'>(" + entry.level + ") " + entry.title + " [" + type_str + "]</a><br/>";
     });
 
     $("#result").html(result_html);
@@ -54,7 +55,7 @@ function list_test_songs(e) {
         else if (entry.type == 5)
             type_str = "GRV";
 
-        result_html += "<a href='javascript:ret_val(\"" + entry.value + "\");'>(" + entry.level + ") " + entry.title + " [" + type_str + "]</a><br/>";
+        result_html += "<a href='javascript:ret_val(\"" + entry.value + "\", " + entry.offset + ");'>(" + entry.level + ") " + entry.title + " [" + type_str + "]</a><br/>";
     });
 
     $("#result").html(result_html);
