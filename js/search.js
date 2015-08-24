@@ -23,6 +23,8 @@ function search(e) {
             type_str = "EXH";
         else if (entry.type == 4)
             type_str = "INF";
+        else if (entry.type == 5)
+            type_str = "GRV";
 
         result_html += "<a href='javascript:ret_val(\"" + entry.value + "\");'>(" + entry.level + ") " + entry.title + " [" + type_str + "]</a><br/>";
     });
@@ -49,6 +51,8 @@ function list_test_songs(e) {
             type_str = "EXH";
         else if (entry.type == 4)
             type_str = "INF";
+        else if (entry.type == 5)
+            type_str = "GRV";
 
         result_html += "<a href='javascript:ret_val(\"" + entry.value + "\");'>(" + entry.level + ") " + entry.title + " [" + type_str + "]</a><br/>";
     });
