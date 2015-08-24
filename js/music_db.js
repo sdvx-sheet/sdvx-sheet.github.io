@@ -325,7 +325,9 @@ var music_test_db = TAFFY([
     { value: "croix_i", title: "croiX", type: 4, level: 15 },
     { value: "dynasty_i", title: "Dynasty", type: 4, level: 15 },
     { value: "gott_i", title: "Gott", type: 4, level: 15 },
-    { value: "max_burning_i", title: "Max Burning!!", type: 4, level: 16 }
+    { value: "max_burning_i", title: "Max Burning!!", type: 4, level: 16 },
+    { value: "in_the_breeze_e", title: "In The Breeze", type: 3, level: 14 },
+    { value: "havox_e", title: "Havox", type: 3, level: 15 }
 ]);
 
 // Initial music_db

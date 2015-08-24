@@ -206,6 +206,8 @@ function addPath(svg, note_pos, x_start, x_end, c_start, c_end) {
     var y_start = getPosition(c_start);
     var y_end = getPosition(c_end);
     var new_svg = svg.polygon([[x_start, y_start], [x_start + Sheet.lineWidth, y_start], [x_end + Sheet.lineWidth, y_end], [x_end, y_end]]);
+    window.svg_analog_stroke.line(x_start, y_start, x_end, y_end, { stroke: 'white', strokeWidth: 2 });
+    window.svg_analog_stroke.line(x_start + Sheet.lineWidth, y_start, x_end + Sheet.lineWidth, y_end, { stroke: 'white', strokeWidth: 2 });
     if (note_pos == 0)
         new_svg.setAttribute("class", "analog_blue moving");
     else
@@ -333,11 +335,13 @@ function loading(event) {
     var svg_measure = $("#g_sheet_measure").svg('get');
     var svg_short = $("#g_sheet_short").svg('get');
     var svg_analog = $("#g_sheet_analog").svg('get');
+    window.svg_analog_stroke = $("#g_sheet_analog_stroke").svg('get');
     var svg_long = $("#g_sheet_long").svg('get');
     var svg_bpm = $("#g_bpm").svg('get');
     $("#g_sheet_measure").html("");
     $("#g_sheet_short").html("");
     $("#g_sheet_analog").html("");
+    $("#g_sheet_analog_stroke").html("");
     $("#g_sheet_long").html("");
     $("#g_bpm").html("");
     bpm_list = [];
@@ -467,6 +471,7 @@ function reloadSheet() {
     $("#g_sheet_measure").html("");
     $("#g_sheet_short").html("");
     $("#g_sheet_analog").html("");
+    $("#g_sheet_analog_stroke").html("");
     $("#g_sheet_long").html("");
     $("#g_bpm").html("");
     window.bpm_list = [];
@@ -526,11 +531,13 @@ function localLoading(event) {
     var svg_measure = $("#g_sheet_measure").svg('get');
     var svg_short = $("#g_sheet_short").svg('get');
     var svg_analog = $("#g_sheet_analog").svg('get');
+    window.svg_analog_stroke = $("#g_sheet_analog_stroke").svg('get');
     var svg_long = $("#g_sheet_long").svg('get');
     var svg_bpm = $("#g_bpm").svg('get');
     $("#g_sheet_measure").html("");
     $("#g_sheet_short").html("");
     $("#g_sheet_analog").html("");
+    $("#g_sheet_analog_stroke").html("");
     $("#g_sheet_long").html("");
     $("#g_bpm").html("");
     bpm_list = [];
@@ -629,11 +636,13 @@ $(document).ready(function () {
     $("#g_sheet_measure").svg();
     $("#g_sheet_long").svg();
     $("#g_sheet_analog").svg();
+    $("#g_sheet_analog_stroke").svg();
     $("#g_sheet_short").svg();
 
     svg_measure = $("#g_sheet_measure").svg('get');
     svg_short = $("#g_sheet_short").svg('get');
     svg_analog = $("#g_sheet_analog").svg('get');
+    window.svg_analog_stroke = $("#g_sheet_analog_stroke").svg('get');
     svg_long = $("#g_sheet_long").svg('get');
     svg_bpm = $("#g_bpm").svg('get');   
 
